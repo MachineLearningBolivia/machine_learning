@@ -38,7 +38,9 @@
   </nav>
 </template>
 <script setup>
-import Avatar from "@/components/avatar/Avatar.vue";
 import { useUtilsStore } from "@/stores/utils";
+
+import Avatar from "@/components/avatar/Avatar.vue";
+
 const utilsStore = useUtilsStore();
 </script>

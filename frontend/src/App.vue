@@ -1,4 +1,7 @@
 <template>
   <RouterView />
+  <Toaster richColors />
 </template>
-<script setup></script>
+<script setup>
+import { Toaster } from "vue-sonner";
+</script>

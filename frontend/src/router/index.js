@@ -4,6 +4,8 @@ import Admin from "@/templates/Layout.vue";
 import Auth from "@/templates/Auth.vue";
 
 import Dashboard from "@/views/admin/Dashboard.vue";
+import Profile from "@/views/forms/ProfileForms.vue";
+import UpdatePassword from "@/views/forms/UpdatePassword.vue";
 
 import Login from "@/views/auth/Login.vue";
 
@@ -19,6 +21,15 @@ const router = createRouter({
         {
           path: "/dashboard",
           component: Dashboard,
+        },
+        // Configuración
+        {
+          path: "/profile",
+          component: Profile,
+        },
+        {
+          path: "updatePassword",
+          component: UpdatePassword,
         },
       ],
     },
@@ -41,7 +52,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     // acceso a admin
-    const isAuthenticated = false;
+    const isAuthenticated = true;
     if (!isAuthenticated) {
       next("/auth/login");
     } else {
