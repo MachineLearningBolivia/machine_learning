@@ -9,6 +9,7 @@ use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\OperationsController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,3 +33,4 @@ Route::resource('operations', OperationsController::class);
 Route::resource('operationTypes', OperationTypesController::class);
 Route::resource('people', PeopleController::class);
 Route::resource('sales', SalesController::class);
+Route::resource('users', UserController::class);

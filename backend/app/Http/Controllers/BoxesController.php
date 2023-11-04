@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Boxes;
+use App\Models\Box;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -10,7 +10,7 @@ class BoxesController extends Controller
 {
     public function index()
     {
-        $boxes = Boxes::all();
+        $boxes = Box::all();
         return response()->json($boxes);
     }
 
@@ -33,7 +33,7 @@ class BoxesController extends Controller
             }
 
             // Crear y guardar la categoría
-            $box = Boxes::create($params_array);
+            $box = Box::create($params_array);
 
             // Devolver respuesta
             return response()->json(['status' => 'success', 'box' => $box], 201);
@@ -44,7 +44,7 @@ class BoxesController extends Controller
 
     public function show($id)
     {
-        $box = Boxes::find($id);
+        $box = Box::find($id);
 
         if ($box) {
             return response()->json([
@@ -63,33 +63,26 @@ class BoxesController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Recoger datos POST
-        $json = $request->input('json', null);
-        $params_array = json_decode($json, true);
+        $params_array = json_decode($request->input('json', null), true);
 
         if (!empty($params_array)) {
-            // Validar datos
             $validator = Validator::make($params_array, [
                 'name' => 'required',
                 'description' => 'required',
             ]);
 
             if ($validator->fails()) {
-                // Devolver error de validación
                 return response()->json($validator->errors(), 400);
             }
 
-            // Quitar datos no necesarios
-            unset($params_array['id']);
-            unset($params_array['created_at']);
-            unset($params_array['updated_at']);
-            unset($params_array['deleted_at']);
+            $box = Box::find($id);
 
-            // Actualizar box
-            $box = Boxes::where('id', $id)->update($params_array);
-
-            // Devolver respuesta
-            return response()->json(['status' => 'success', 'box' => $params_array], 200);
+            if ($box) {
+                $box->update($params_array);
+                return response()->json(['status' => 'success', 'box' => $box], 200);
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'Caja no encontrada'], 404);
+            }
         } else {
             return response()->json(['status' => 'error', 'message' => 'No se envió ninguna caja'], 400);
         }

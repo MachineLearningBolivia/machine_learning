@@ -1,14 +1,14 @@
 <?php
 
 namespace Database\Factories;
-
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
+
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Operations>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Categories>
  */
-class OperationsFactory extends Factory
+class CategoryFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -21,12 +21,8 @@ class OperationsFactory extends Factory
 
         return [
             'name' => $name,
-            'description' => $this->faker->paragraph,
             'slug' => Str::slug($name),
-            'operation_type_id' => \App\Models\OperationTypes::factory(),
-            'box_id' => \App\Models\Boxes::factory(),
-            'user' =>    \App\Models\User::factory(),
-
+            'description' => $this->faker->paragraph
         ];
     }
 }

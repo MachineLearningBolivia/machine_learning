@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Sales>
  */
-class SalesFactory extends Factory
+class SaleFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -22,8 +22,8 @@ class SalesFactory extends Factory
             'totalPrice' => $this->faker->randomFloat(2, 0, 1000),
             'date' => $this->faker->date(),
             'slug' => Str::slug($this->faker->sentence),
-            'product_id' => \App\Models\Products::factory(),
-            'person_id' => \App\Models\People::factory(),
+            'product_id' => \App\Models\Product::factory(),
+            'person_id' => \App\Models\Person::factory(),
         ];
     }
 }

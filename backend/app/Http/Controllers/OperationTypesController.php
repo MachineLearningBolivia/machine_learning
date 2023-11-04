@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OperationTypes;
+use App\Models\OperationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -10,7 +10,7 @@ class OperationTypesController extends Controller
 {
     public function index()
     {
-        $operationTypes = OperationTypes::all();
+        $operationTypes = OperationType::all();
         return response()->json($operationTypes);
     }
 
@@ -33,7 +33,7 @@ class OperationTypesController extends Controller
             }
 
             // Crear y guardar el tipo de operación
-            $operationType = OperationTypes::create($params_array);
+            $operationType = OperationType::create($params_array);
 
             // Devolver respuesta
             return response()->json(['status' => 'success', 'operationType' => $operationType], 201);
@@ -44,7 +44,7 @@ class OperationTypesController extends Controller
 
     public function show($id)
     {
-        $operationType = OperationTypes::find($id);
+        $operationType = OperationType::find($id);
 
         if ($operationType) {
             return response()->json([
@@ -63,34 +63,28 @@ class OperationTypesController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Recoger datos POST
-        $json = $request->input('json', null);
-        $params_array = json_decode($json, true);
+        $params_array = json_decode($request->input('json', null), true);
 
         if (!empty($params_array)) {
-            // Validar datos
             $validator = Validator::make($params_array, [
                 'name' => 'required',
                 'description' => 'required',
             ]);
 
             if ($validator->fails()) {
-                // Devolver error de validación
                 return response()->json($validator->errors(), 400);
             }
 
-            // Quitar datos no necesarios
-            unset($params_array['id']);
-            unset($params_array['created_at']);
-            unset($params_array['updated_at']);
+            $box = OperationType::find($id);
 
-            // Actualizar tipo de operación
-            $operationType = OperationTypes::where('id', $id)->update($params_array);
-
-            // Devolver respuesta
-            return response()->json(['status' => 'success', 'operationType' => $params_array], 200);
+            if ($box) {
+                $box->update($params_array);
+                return response()->json(['status' => 'success', 'box' => $box], 200);
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'Caja no encontrada'], 404);
+            }
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ningún tipo de operación'], 400);
+            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna caja'], 400);
         }
     }
 }

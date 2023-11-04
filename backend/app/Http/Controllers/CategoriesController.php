@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Categories;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -10,7 +10,7 @@ class CategoriesController extends Controller
 {
     public function index()
     {
-        $categories = Categories::all();
+        $categories = Category::all();
         return response()->json($categories);
     }
 
@@ -34,7 +34,7 @@ class CategoriesController extends Controller
             }
 
             // Crear y guardar la categoría
-            $category = Categories::create($params_array);
+            $category = Category::create($params_array);
 
             // Devolver respuesta
             return response()->json(['status' => 'success', 'category' => $category], 201);
@@ -45,7 +45,7 @@ class CategoriesController extends Controller
 
     public function show($id)
     {
-        $category = Categories::find($id);
+        $category = Category::find($id);
 
         if ($category) {
             return response()->json([
@@ -64,35 +64,28 @@ class CategoriesController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Recoger datos POST
-        $json = $request->input('json', null);
-        $params_array = json_decode($json, true);
+        $params_array = json_decode($request->input('json', null), true);
 
         if (!empty($params_array)) {
-            // Validar datos
             $validator = Validator::make($params_array, [
                 'name' => 'required',
-                'slug' => 'required',
                 'description' => 'required',
             ]);
 
             if ($validator->fails()) {
-                // Devolver error de validación
                 return response()->json($validator->errors(), 400);
             }
 
-            // Quitar datos no necesarios
-            unset($params_array['id']);
-            unset($params_array['created_at']);
-            unset($params_array['updated_at']);
+            $box = Category::find($id);
 
-            // Actualizar categoría
-            $category = Categories::where('id', $id)->update($params_array);
-
-            // Devolver respuesta
-            return response()->json(['status' => 'success', 'category' => $params_array], 200);
+            if ($box) {
+                $box->update($params_array);
+                return response()->json(['status' => 'success', 'box' => $box], 200);
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'Caja no encontrada'], 404);
+            }
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna categoría'], 400);
+            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna caja'], 400);
         }
     }
 }

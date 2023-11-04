@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Operations;
+use App\Models\Operation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -10,7 +10,7 @@ class OperationsController extends Controller
 {
     public function index()
     {
-        $operations = Operations::all();
+        $operations = Operation::all();
         return response()->json($operations);
     }
 
@@ -36,7 +36,7 @@ class OperationsController extends Controller
             }
 
             // Crear y guardar la operación
-            $operation = Operations::create($params_array);
+            $operation = Operation::create($params_array);
 
             // Devolver respuesta
             return response()->json(['status' => 'success', 'operation' => $operation], 201);
@@ -47,7 +47,7 @@ class OperationsController extends Controller
 
     public function show($id)
     {
-        $operation = Operations::find($id);
+        $operation = Operation::find($id);
 
         if ($operation) {
             return response()->json([
@@ -66,12 +66,9 @@ class OperationsController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Recoger datos POST
-        $json = $request->input('json', null);
-        $params_array = json_decode($json, true);
+        $params_array = json_decode($request->input('json', null), true);
 
         if (!empty($params_array)) {
-            // Validar datos
             $validator = Validator::make($params_array, [
                 'name' => 'required',
                 'slug' => 'required',
@@ -81,22 +78,19 @@ class OperationsController extends Controller
             ]);
 
             if ($validator->fails()) {
-                // Devolver error de validación
                 return response()->json($validator->errors(), 400);
             }
 
-            // Quitar datos no necesarios
-            unset($params_array['id']);
-            unset($params_array['created_at']);
-            unset($params_array['updated_at']);
+            $box = Operation::find($id);
 
-            // Actualizar operación
-            $operation = Operations::where('id', $id)->update($params_array);
-
-            // Devolver respuesta
-            return response()->json(['status' => 'success', 'operation' => $params_array], 200);
+            if ($box) {
+                $box->update($params_array);
+                return response()->json(['status' => 'success', 'box' => $box], 200);
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'Caja no encontrada'], 404);
+            }
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna operación'], 400);
+            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna caja'], 400);
         }
     }
 }

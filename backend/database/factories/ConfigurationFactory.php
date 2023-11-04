@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Boxes>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Configurations>
  */
-class BoxesFactory extends Factory
+class ConfigurationFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +18,8 @@ class BoxesFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-            'description' => $this->faker->text(),
+            'value' => $this->faker->word,
+            'description' => $this->faker->paragraph,
         ];
     }
 }

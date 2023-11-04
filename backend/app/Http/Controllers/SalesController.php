@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sales;
+use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -10,7 +10,7 @@ class SalesController extends Controller
 {
     public function index()
     {
-        $sales = Sales::all();
+        $sales = Sale::all();
         return response()->json($sales);
     }
 
@@ -37,7 +37,7 @@ class SalesController extends Controller
             }
 
             // Crear y guardar la venta
-            $sale = Sales::create($params_array);
+            $sale = Sale::create($params_array);
 
             // Devolver respuesta
             return response()->json(['status' => 'success', 'sale' => $sale], 201);
@@ -48,7 +48,7 @@ class SalesController extends Controller
 
     public function show($id)
     {
-        $sale = Sales::find($id);
+        $sale = Sale::find($id);
 
         if ($sale) {
             return response()->json([
@@ -67,12 +67,9 @@ class SalesController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Recoger datos POST
-        $json = $request->input('json', null);
-        $params_array = json_decode($json, true);
+        $params_array = json_decode($request->input('json', null), true);
 
         if (!empty($params_array)) {
-            // Validar datos
             $validator = Validator::make($params_array, [
                 'quantity' => 'required|integer',
                 'totalPrice' => 'required|numeric',
@@ -83,22 +80,19 @@ class SalesController extends Controller
             ]);
 
             if ($validator->fails()) {
-                // Devolver error de validación
                 return response()->json($validator->errors(), 400);
             }
 
-            // Quitar datos no necesarios
-            unset($params_array['id']);
-            unset($params_array['created_at']);
-            unset($params_array['updated_at']);
+            $box = Sale::find($id);
 
-            // Actualizar venta
-            $sale = Sales::where('id', $id)->update($params_array);
-
-            // Devolver respuesta
-            return response()->json(['status' => 'success', 'sale' => $params_array], 200);
+            if ($box) {
+                $box->update($params_array);
+                return response()->json(['status' => 'success', 'box' => $box], 200);
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'Caja no encontrada'], 404);
+            }
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna venta'], 400);
+            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna caja'], 400);
         }
     }
 }

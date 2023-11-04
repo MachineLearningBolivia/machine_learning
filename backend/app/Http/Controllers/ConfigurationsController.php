@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Configurations;
+use App\Models\Configuration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -10,7 +10,7 @@ class ConfigurationsController extends Controller
 {
     public function index()
     {
-        $configurations = Configurations::all();
+        $configurations = Configuration::all();
         return response()->json($configurations);
     }
 
@@ -34,7 +34,7 @@ class ConfigurationsController extends Controller
             }
 
             // Crear y guardar la configuración
-            $configuration = Configurations::create($params_array);
+            $configuration = Configuration::create($params_array);
 
             // Devolver respuesta
             return response()->json(['status' => 'success', 'configuration' => $configuration], 201);
@@ -45,7 +45,7 @@ class ConfigurationsController extends Controller
 
     public function show($id)
     {
-        $configuration = Configurations::find($id);
+        $configuration = Configuration::find($id);
 
         if ($configuration) {
             return response()->json([
@@ -64,12 +64,9 @@ class ConfigurationsController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Recoger datos POST
-        $json = $request->input('json', null);
-        $params_array = json_decode($json, true);
+        $params_array = json_decode($request->input('json', null), true);
 
         if (!empty($params_array)) {
-            // Validar datos
             $validator = Validator::make($params_array, [
                 'name' => 'required',
                 'value' => 'required',
@@ -77,22 +74,19 @@ class ConfigurationsController extends Controller
             ]);
 
             if ($validator->fails()) {
-                // Devolver error de validación
                 return response()->json($validator->errors(), 400);
             }
 
-            // Quitar datos no necesarios
-            unset($params_array['id']);
-            unset($params_array['created_at']);
-            unset($params_array['updated_at']);
+            $box = Configuration::find($id);
 
-            // Actualizar configuración
-            $configuration = Configurations::where('id', $id)->update($params_array);
-
-            // Devolver respuesta
-            return response()->json(['status' => 'success', 'configuration' => $params_array], 200);
+            if ($box) {
+                $box->update($params_array);
+                return response()->json(['status' => 'success', 'box' => $box], 200);
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'Caja no encontrada'], 404);
+            }
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna configuración'], 400);
+            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna caja'], 400);
         }
     }
 }

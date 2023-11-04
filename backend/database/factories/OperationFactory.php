@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Products>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Operations>
  */
-class ProductsFactory extends Factory
+class OperationFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -22,12 +22,11 @@ class ProductsFactory extends Factory
         return [
             'name' => $name,
             'description' => $this->faker->paragraph,
-            'price' => $this->faker->randomFloat(2, 0, 1000),
-            'stock' => $this->faker->numberBetween(0, 100),
             'slug' => Str::slug($name),
-            'image' => $this->faker->imageUrl(),
-            'status' => $this->faker->boolean,
-            'category_id' => \App\Models\Categories::factory(),
+            'operation_type_id' => \App\Models\OperationType::factory(),
+            'box_id' => \App\Models\Box::factory(),
+            'user' =>    \App\Models\User::factory(),
+
         ];
     }
 }

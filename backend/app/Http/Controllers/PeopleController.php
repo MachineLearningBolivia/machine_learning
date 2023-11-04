@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\People;
+use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -10,7 +10,7 @@ class PeopleController extends Controller
 {
     public function index()
     {
-        $people = People::all();
+        $people = Person::all();
         return response()->json($people);
     }
 
@@ -34,7 +34,7 @@ class PeopleController extends Controller
             }
 
             // Crear y guardar la persona
-            $person = People::create($params_array);
+            $person = Person::create($params_array);
 
             // Devolver respuesta
             return response()->json(['status' => 'success', 'person' => $person], 201);
@@ -45,7 +45,7 @@ class PeopleController extends Controller
 
     public function show($id)
     {
-        $person = People::find($id);
+        $person = Person::find($id);
 
         if ($person) {
             return response()->json([
@@ -64,12 +64,9 @@ class PeopleController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Recoger datos POST
-        $json = $request->input('json', null);
-        $params_array = json_decode($json, true);
+        $params_array = json_decode($request->input('json', null), true);
 
         if (!empty($params_array)) {
-            // Validar datos
             $validator = Validator::make($params_array, [
                 'name' => 'required',
                 'city' => 'required',
@@ -77,22 +74,19 @@ class PeopleController extends Controller
             ]);
 
             if ($validator->fails()) {
-                // Devolver error de validación
                 return response()->json($validator->errors(), 400);
             }
 
-            // Quitar datos no necesarios
-            unset($params_array['id']);
-            unset($params_array['created_at']);
-            unset($params_array['updated_at']);
+            $box = Person::find($id);
 
-            // Actualizar persona
-            $person = People::where('id', $id)->update($params_array);
-
-            // Devolver respuesta
-            return response()->json(['status' => 'success', 'person' => $params_array], 200);
+            if ($box) {
+                $box->update($params_array);
+                return response()->json(['status' => 'success', 'box' => $box], 200);
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'Caja no encontrada'], 404);
+            }
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna persona'], 400);
+            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna caja'], 400);
         }
     }
 }

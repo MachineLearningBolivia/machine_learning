@@ -2,63 +2,101 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class User extends Controller
+class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $users = User::all();
+        return response()->json($users);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        // Recoger datos POST
+        $json = $request->input('json', null);
+        $params_array = json_decode($json, true);
+
+        if (!empty($params_array)) {
+            // Validar datos
+            $validator = Validator::make($params_array, [
+                'name' => 'required',
+                'surname' => 'required',
+                'role' => 'required',
+                'email' => 'required|email|unique:users',
+                'password' => 'required',
+                'phone' => 'required',
+                'avatar' => 'required',
+                'status' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                // Devolver error de validación
+                return response()->json($validator->errors(), 400);
+            }
+
+            // Crear y guardar el usuario
+            $user = User::create($params_array);
+
+            // Devolver respuesta
+            return response()->json(['status' => 'success', 'user' => $user], 201);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'No se envió ningún usuario'], 400);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $user = User::find($id);
+
+        if ($user) {
+            return response()->json([
+                'code' => 200,
+                'status' => 'success',
+                'user' => $user
+            ], 200);
+        } else {
+            return response()->json([
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Usuario no encontrado'
+            ], 404);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, $id)
     {
-        //
-    }
+        $params_array = json_decode($request->input('json', null), true);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        if (!empty($params_array)) {
+            $validator = Validator::make($params_array, [
+                'name' => 'required',
+                'surname' => 'required',
+                'role' => 'required',
+                'email' => 'required|email|unique:users',
+                'password' => 'required',
+                'phone' => 'required',
+                'avatar' => 'required',
+                'status' => 'required',
+            ]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 400);
+            }
+
+            $box = User::find($id);
+
+            if ($box) {
+                $box->update($params_array);
+                return response()->json(['status' => 'success', 'box' => $box], 200);
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'Caja no encontrada'], 404);
+            }
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna caja'], 400);
+        }
     }
 }
