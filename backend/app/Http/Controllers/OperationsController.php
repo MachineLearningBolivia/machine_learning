@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Operation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\OperationCollection;
 
 class OperationsController extends Controller
 {
     public function index()
     {
         $operations = Operation::all();
-        return response()->json($operations);
+        return new OperationCollection($operations);
     }
 
     public function store(Request $request)

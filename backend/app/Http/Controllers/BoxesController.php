@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Box;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\BoxCollection;
 
 class BoxesController extends Controller
 {
     public function index()
     {
         $boxes = Box::all();
-        return response()->json($boxes);
+        return new BoxCollection($boxes);
     }
 
     public function store(Request $request)

@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Configuration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\ConfigurationCollection;
 
 class ConfigurationsController extends Controller
 {
     public function index()
     {
         $configurations = Configuration::all();
-        return response()->json($configurations);
+        return new ConfigurationCollection($configurations);
     }
 
     public function store(Request $request)

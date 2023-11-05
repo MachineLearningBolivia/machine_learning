@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\CategoryCollection;
 
 class CategoriesController extends Controller
 {
     public function index()
     {
         $categories = Category::all();
-        return response()->json($categories);
+        return new CategoryCollection($categories);
     }
 
     public function store(Request $request)

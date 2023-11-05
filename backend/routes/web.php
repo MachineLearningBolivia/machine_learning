@@ -1,15 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BoxesController;
-use App\Http\Controllers\CategoriesController;
-use App\Http\Controllers\ConfigurationsController;
-use App\Http\Controllers\OperationTypesController;
-use App\Http\Controllers\PeopleController;
-use App\Http\Controllers\OperationsController;
-use App\Http\Controllers\ProductsController;
-use App\Http\Controllers\SalesController;
-use App\Http\Controllers\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,13 +16,3 @@ use App\Http\Controllers\UserController;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::resource('boxes', BoxesController::class);
-Route::resource('categories', CategoriesController::class);
-Route::resource('products', ProductsController::class);
-Route::resource('configurations', ConfigurationsController::class);
-Route::resource('operations', OperationsController::class);
-Route::resource('operationTypes', OperationTypesController::class);
-Route::resource('people', PeopleController::class);
-Route::resource('sales', SalesController::class);
-Route::resource('users', UserController::class);

@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\SaleCollection;
 
 class SalesController extends Controller
 {
     public function index()
     {
         $sales = Sale::all();
-        return response()->json($sales);
+        return new SaleCollection($sales);
     }
 
     public function store(Request $request)

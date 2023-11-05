@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\PersonCollection;
 
 class PeopleController extends Controller
 {
     public function index()
     {
         $people = Person::all();
-        return response()->json($people);
+        return new PersonCollection($people);
     }
 
     public function store(Request $request)

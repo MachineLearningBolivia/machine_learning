@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\ProductCollection;
 
 class ProductsController extends Controller
 {
     public function index()
     {
         $products = Product::all();
-        return response()->json($products);
+        return new ProductCollection($products);
     }
 
     public function store(Request $request)

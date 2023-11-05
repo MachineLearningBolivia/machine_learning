@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\OperationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\OperationTypeCollection;
 
 class OperationTypesController extends Controller
 {
     public function index()
     {
         $operationTypes = OperationType::all();
-        return response()->json($operationTypes);
+        return new OperationTypeCollection($operationTypes);
     }
 
     public function store(Request $request)
