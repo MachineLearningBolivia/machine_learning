@@ -14,46 +14,32 @@
           <Archor to="/dashboard" icon="fa-flipboard" name="Panel de control" />
         </li>
         <li>
-          <ArchorAccordion name="Usuarios" icon="fa-users">
+          <Archor to="/people" icon="fa-users" name="Clientes" />
+        </li>
+        <li>
+          <Archor to="/sale" icon="fa-chart-bar" name="Ventas" />
+        </li>
+        <li>
+          <ArchorAccordion name="Productos" icon="fa-shopping-cart">
             <li>
-              <Archor to="/employee" icon="fa-user-tie" name="Empleados" />
-              <Archor to="/external" icon="fa-user" name="Externos" />
+              <Archor to="/category" icon="fa-list-alt" name="Categorias" />
+              <Archor to="/product" icon="fa-cubes" name="Productos" />
             </li>
           </ArchorAccordion>
         </li>
         <li>
-          <Archor to="/visit" icon="fa-user-edit" name="Visitas" />
-        </li>
-        <li>
-          <ArchorAccordion name="Tarjetas" icon="fa-address-card">
+          <ArchorAccordion name="Operaciones" icon="fa-edit">
             <li>
+              <Archor to="/box" icon="fa-box" name="Cajas" />
               <Archor
-                to="/typecard"
-                icon="fa-address-book"
-                name="Tipos de tarjetas"
+                to="/operationType"
+                icon="fa-regular-edit"
+                name="Tipo de operación"
               />
-              <Archor to="/card" icon="fa-address-card" name="Tarjetas" />
-            </li>
-          </ArchorAccordion>
-        </li>
-        <li>
-          <ArchorAccordion name="Entradas y salidas" icon="fa-calendar-alt">
-            <li>
-              <Archor to="/entry" icon="fa-sign-in-alt" name="Entradas" />
-              <Archor to="/exit" icon="fa-sign-out-alt" name="Salidas" />
-            </li>
-          </ArchorAccordion>
-        </li>
-        <li>
-          <ArchorAccordion name="Horarios" icon="fa-calendar-alt">
-            <li>
-              <Archor to="/timetable" icon="fa-calendar-alt" name="Horarios" />
-              <Archor to="/assign" icon="fa-clock" name="Asignar Horarios" />
-              <Archor to="/vacation" icon="fa-calendar-day" name="Vacaciones" />
               <Archor
-                to="/inactive"
-                icon="fa-calendar-times"
-                name="Inactivos"
+                to="/operation"
+                icon="fa-clipboard-list"
+                name="Operaciones"
               />
             </li>
           </ArchorAccordion>
@@ -61,8 +47,13 @@
         <li>
           <ArchorAccordion name="Configuración" icon="co-settings">
             <li>
-              <Archor to="/role" icon="fa-users" name="Roles de empleados" />
-              <Archor to="/turnstile" icon="gi-turnstile" name="Molinetes" />
+              <Archor to="/setting" icon="co-settings" name="Settings" />
+            </li>
+            <li>
+              <Archor to="/setting" icon="co-settings" name="Settings" />
+            </li>
+            <li>
+              <Archor to="/setting" icon="co-settings" name="Settings" />
             </li>
           </ArchorAccordion>
         </li>

@@ -1,7 +1,6 @@
 <template>
   <div class="relative w-full mb-3">
     <label
-      :for="id"
       class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
     >
       {{ labelText }}
@@ -11,23 +10,23 @@
         {{ error.$message }}
       </p>
     </div>
-    <input
+    <select
       :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
-      @blur="$emit('blur')"
+      @change="$emit('update:modelValue', $event.target.value)"
       :id="id"
-      :type="type"
-      :placeholder="placeholder"
       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       :disabled="disabled"
-      :min="min"
-      :max="max"
-    />
+    >
+      <option disabled value="">Seleccionar una opción</option>
+
+      <option v-for="item in options" :value="item.id" :key="item.id">
+        {{ item[name] }}
+      </option>
+    </select>
   </div>
 </template>
 
 <script setup>
-defineEmits(["update:modelValue", "blur"]);
 const props = defineProps({
   id: {
     type: String,
@@ -38,33 +37,25 @@ const props = defineProps({
     required: true,
   },
   modelValue: {
-    type: [String, Number, Boolean],
+    type: [String, Number],
     required: true,
   },
   errors: {
     type: Array,
-    default: () => [],
+    required: true,
   },
-  type: {
-    type: String,
-    default: "text",
+  options: {
+    type: Array,
+    required: true,
   },
-  placeholder: {
+  name: {
     type: String,
-    default: " ",
+    default: "name",
   },
   disabled: {
     type: Boolean,
     required: false,
     default: false,
-  },
-  min: {
-    type: Number,
-    required: false,
-  },
-  max: {
-    type: Number,
-    required: false,
   },
 });
 </script>

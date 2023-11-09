@@ -3,10 +3,27 @@ import { createRouter, createWebHistory } from "vue-router";
 import Admin from "@/templates/Layout.vue";
 import Auth from "@/templates/Auth.vue";
 
+// views for admin layout
 import Dashboard from "@/views/admin/Dashboard.vue";
+import People from "@/views/admin/People.vue";
+import Category from "@/views/admin/Category.vue";
+import Product from "@/views/admin/Product.vue";
+import Sale from "@/views/admin/Sale.vue";
+import Box from "@/views/admin/Box.vue";
+import OperationType from "@/views/admin/OperationType.vue";
+import Operation from "@/views/admin/Operation.vue";
+
+// Forms
 import Profile from "@/views/forms/ProfileForms.vue";
 import UpdatePassword from "@/views/forms/UpdatePassword.vue";
+import PersonForms from "@/views/forms/PersonForms.vue";
+import CategoryForms from "@/views/forms/CategoryForms.vue";
+import ProductForms from "@/views/forms/ProductForms.vue";
+import BoxForms from "@/views/forms/BoxForms.vue";
+import OperationTypeForms from "@/views/forms/OperationTypeForms.vue";
+import OperationForms from "@/views/forms/OperationForms.vue";
 
+// views for Auth layout
 import Login from "@/views/auth/Login.vue";
 
 const router = createRouter({
@@ -30,6 +47,87 @@ const router = createRouter({
         {
           path: "updatePassword",
           component: UpdatePassword,
+        },
+        // Clientes
+        {
+          path: "/people",
+          component: People,
+        },
+        {
+          path: "/newPerson",
+          component: PersonForms,
+        },
+        {
+          path: "/updatePerson",
+          component: PersonForms,
+        },
+        // Productos
+        {
+          path: "/category",
+          component: Category,
+        },
+        {
+          path: "/newCategory",
+          component: CategoryForms,
+        },
+        {
+          path: "/updateCategory",
+          component: CategoryForms,
+        },
+        {
+          path: "/product",
+          component: Product,
+        },
+        {
+          path: "/newProduct",
+          component: ProductForms,
+        },
+        {
+          path: "/updateProduct",
+          component: ProductForms,
+        },
+        // Sale
+        {
+          path: "/sale",
+          component: Sale,
+        },
+        // Operacion
+
+        {
+          path: "/box",
+          component: Box,
+        },
+        {
+          path: "/newBox",
+          component: BoxForms,
+        },
+        {
+          path: "/updateBox",
+          component: BoxForms,
+        },
+        {
+          path: "/operationType",
+          component: OperationType,
+        },
+        {
+          path: "/newOperationType",
+          component: OperationTypeForms,
+        },
+        {
+          path: "/updateOperationType",
+          component: OperationTypeForms,
+        },
+        {
+          path: "/operation",
+          component: Operation,
+        },
+        {
+          path: "/newOperation",
+          component: OperationForms,
+        },
+        {
+          path: "/updateOperation",
+          component: OperationForms,
         },
       ],
     },
