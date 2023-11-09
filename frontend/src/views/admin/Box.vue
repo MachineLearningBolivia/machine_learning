@@ -6,9 +6,9 @@
       </div>
       <button-add to="/newBox"> Agregar Caja </button-add>
     </template>
+    <data-table :items="itemsDisplay" :columns="columnas" :options="options">
+    </data-table>
   </card-data>
-  <data-table :items="itemsDisplay" :columns="columnas" :options="options">
-  </data-table>
 </template>
 <script setup>
 import CardData from "@/components/Cards/CardData.vue";

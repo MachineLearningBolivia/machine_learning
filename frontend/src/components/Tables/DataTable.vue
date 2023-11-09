@@ -4,7 +4,7 @@
       <thead
         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
       >
-        <!-- <tr>
+        <tr>
           <th v-if="check" class="px-4 py-3">
             <input type="checkbox" @click="change" v-model="checkbox" />
           </th>
@@ -16,10 +16,10 @@
           >
             {{ column.label }}
           </th>
-          <th v-if="options.length > 0" class="px-4 py-3">
+          <!-- <th v-if="options.length > 0" class="px-4 py-3">
             <span>Acciones</span>
-          </th>
-        </tr> -->
+          </th>  -->
+        </tr>
       </thead>
       <tbody>
         <tr
@@ -93,7 +93,7 @@
         </tr>
       </tbody>
     </table>
-    <!-- <nav
+    <nav
       class="flex items-center justify-between pt-4 pb-8"
       aria-label="Table navigation"
     >
@@ -147,14 +147,14 @@
           </button>
         </li>
       </ul>
-    </nav> -->
+    </nav>
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
 // import { fullDateFormat } from "@/utils/index";
-// import TableDropdown from "@/components/Dropdown/TableDropdown.vue";
+import TableDropdown from "@/components/Dropdown/TableDropdown.vue";
 import Dropdown from "@/components/Dropdown/Dropdown.vue";
 
 const emit = defineEmits(["action"]);
@@ -180,7 +180,7 @@ const props = defineProps({
 const checkbox = ref(false);
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
-/*const totalPages = computed(() => {
+/* const totalPages = computed(() => {
   return Math.ceil(props.items.length / itemsPerPage.value);
 });
 const itemsDisplay = computed(() => {
