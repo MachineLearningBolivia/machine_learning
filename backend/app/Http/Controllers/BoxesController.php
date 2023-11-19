@@ -6,13 +6,17 @@ use App\Models\Box;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\BoxCollection;
+use App\Filters\BoxFilter;
 
 class BoxesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $boxes = Box::all();
-        return new BoxCollection($boxes);
+        $filter = new BoxFilter();
+        $queryItems = $filter->transform($request);
+
+        $boxes = Box::where($queryItems);
+        return new BoxCollection($boxes->paginate()->appends($request->query()));
     }
 
     public function store(Request $request)
