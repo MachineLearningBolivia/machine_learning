@@ -6,13 +6,21 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\UserCollection;
+use App\Filters\UserFilter;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
-        return new UserCollection($users);
+        try {
+            $filter = new UserFilter();
+            $queryItems = $filter->transform($request);
+
+            $users = User::where($queryItems);
+            return new UserCollection($users->paginate()->appends($request->query()));
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function store(Request $request)

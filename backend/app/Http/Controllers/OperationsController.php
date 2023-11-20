@@ -6,13 +6,29 @@ use App\Models\Operation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\OperationCollection;
+use App\Filters\OperationFilter;
 
 class OperationsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $operations = Operation::all();
-        return new OperationCollection($operations);
+        try {
+            $filter = new OperationFilter();
+            $queryItems = $filter->transform($request);
+            $relations = ['operationType', 'box', 'user'];
+
+            $operations = Operation::where($queryItems);
+
+            foreach ($relations as $relation) {
+                if ($request->query('include' . ucfirst($relation))) {
+                    $operations->with(strtolower($relation));
+                }
+            }
+
+            return new OperationCollection($operations->paginate()->appends($request->query()));
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function store(Request $request)

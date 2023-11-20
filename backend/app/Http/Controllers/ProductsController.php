@@ -6,13 +6,29 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\ProductCollection;
+use App\Filters\ProductFilter;
 
 class ProductsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
-        return new ProductCollection($products);
+        try {
+            $filter = new ProductFilter();
+            $queryItems = $filter->transform($request);
+            $relations = ['category'];
+
+            $products = Product::where($queryItems);
+
+            foreach ($relations as $relation) {
+                if ($request->query('include' . ucfirst($relation))) {
+                    $products->with(strtolower($relation));
+                }
+            }
+
+            return new ProductCollection($products->paginate()->appends($request->query()));
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function store(Request $request)

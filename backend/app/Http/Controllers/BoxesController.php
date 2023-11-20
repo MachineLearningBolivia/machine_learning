@@ -12,11 +12,15 @@ class BoxesController extends Controller
 {
     public function index(Request $request)
     {
-        $filter = new BoxFilter();
-        $queryItems = $filter->transform($request);
+        try {
+            $filter = new BoxFilter();
+            $queryItems = $filter->transform($request);
 
-        $boxes = Box::where($queryItems);
-        return new BoxCollection($boxes->paginate()->appends($request->query()));
+            $boxes = Box::where($queryItems);
+            return new BoxCollection($boxes->paginate()->appends($request->query()));
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function store(Request $request)

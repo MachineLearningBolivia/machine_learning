@@ -6,13 +6,21 @@ use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\PersonCollection;
+use App\Filters\PersonFilter;
 
 class PeopleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $people = Person::all();
-        return new PersonCollection($people);
+        try {
+            $filter = new PersonFilter();
+            $queryItems = $filter->transform($request);
+
+            $people = Person::where($queryItems);
+            return new PersonCollection($people->paginate()->appends($request->query()));
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function store(Request $request)

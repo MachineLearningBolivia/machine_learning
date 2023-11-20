@@ -6,13 +6,21 @@ use App\Models\OperationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\OperationTypeCollection;
+use App\Filters\OperationTypeFilter;
 
 class OperationTypesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $operationTypes = OperationType::all();
-        return new OperationTypeCollection($operationTypes);
+        try {
+            $filter = new OperationTypeFilter();
+            $queryItems = $filter->transform($request);
+
+            $operationTypes = OperationType::where($queryItems);
+            return new OperationTypeCollection($operationTypes->paginate()->appends($request->query()));
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function store(Request $request)

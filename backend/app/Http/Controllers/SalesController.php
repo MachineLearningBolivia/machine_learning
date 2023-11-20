@@ -6,13 +6,29 @@ use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\SaleCollection;
+use App\Filters\SaleFilter;
 
 class SalesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $sales = Sale::all();
-        return new SaleCollection($sales);
+        try {
+            $filter = new SaleFilter();
+            $queryItems = $filter->transform($request);
+            $relations = ['product', 'person'];
+
+            $sales = Sale::where($queryItems);
+
+            foreach ($relations as $relation) {
+                if ($request->query('include' . ucfirst($relation))) {
+                    $sales->with(strtolower($relation));
+                }
+            }
+
+            return new SaleCollection($sales->paginate()->appends($request->query()));
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function store(Request $request)

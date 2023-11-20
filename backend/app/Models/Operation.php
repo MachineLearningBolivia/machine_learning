@@ -16,7 +16,7 @@ class Operation extends Model
         return $this->belongsTo(Box::class);
     }
 
-    public function operation_type()
+    public function operationType()
     {
         return $this->belongsTo(OperationType::class);
     }

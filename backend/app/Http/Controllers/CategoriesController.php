@@ -6,13 +6,21 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\CategoryCollection;
+use App\Filters\CategoryFilter;
 
 class CategoriesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::all();
-        return new CategoryCollection($categories);
+        try {
+            $filter = new CategoryFilter();
+            $queryItems = $filter->transform($request);
+
+            $categories = Category::where($queryItems);
+            return new CategoryCollection($categories->paginate()->appends($request->query()));
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function store(Request $request)

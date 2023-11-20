@@ -6,13 +6,22 @@ use App\Models\Configuration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\ConfigurationCollection;
+use App\Filters\ConfigurationFilter;
+
 
 class ConfigurationsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $configurations = Configuration::all();
-        return new ConfigurationCollection($configurations);
+        try {
+            $filter = new ConfigurationFilter();
+            $queryItems = $filter->transform($request);
+
+            $configurations = Configuration::where($queryItems);
+            return new ConfigurationCollection($configurations->paginate()->appends($request->query()));
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function store(Request $request)
