@@ -180,6 +180,12 @@ const props = defineProps({
 const checkbox = ref(false);
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
+const itemsDisplay = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return props.items.slice(start, end);
+});
+
 /* const totalPages = computed(() => {
   return Math.ceil(props.items.length / itemsPerPage.value);
 });
