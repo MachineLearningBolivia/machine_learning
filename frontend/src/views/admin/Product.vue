@@ -45,11 +45,12 @@ async function loadData() {
   try {
     const res = await getProduct();
     items.value = res.data;
+    console.log(res)
     itemsDisplay.value = items.value.data;
     load.value = false;
-    console.log(items.value);
-    console.log(items.value.data[3]);
-    console.log(itemsDisplay.value[0]);
+    //console.log(items.value);
+    //console.log(items.value.data[3]);
+    //console.log(itemsDisplay.value[0]);
     //console.log(items.value[0]);
   } catch (error) {
     toast.error("Error al cargar datos");

@@ -185,29 +185,13 @@ const currentPage = ref(1);
 const itemsPerPage = ref(5);
 const itemsDisplay = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value;
+  console.log(itemsPerPage.value)
   const end = start + itemsPerPage.value;
   return props.items.slice(start, end);
 });
 
-/* const totalPages = computed(() => {
+const totalPages = computed(() => {
+  console.log(props.items.length)
   return Math.ceil(props.items.length / itemsPerPage.value);
 });
-const itemsDisplay = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value;
-  const end = start + itemsPerPage.value;
-  return props.items.slice(start, end);
-});
-function dateFormated(date) {
-  return fullDateFormat(date);
-}
-function action(data) {
-  emit("action", data);
-}
-function change() {
-  checkbox.value = !checkbox.value;
-  props.items.forEach((item) => {
-    item.check = checkbox.value;
-  });
-}
-const selected = ref([]); */
 </script>
