@@ -22,9 +22,9 @@
       <div class="w-full lg:w-6/12 px-4">
         <Input id="stock" labelText="Cantidad" type="number" v-model="modelProduct.stock" />
       </div>
-      <!-- <div class="w-full lg:w-full px-4">
-        <Input id="image" labelText="Imagen" type="file" />
-      </div> -->
+      <div class="w-full lg:w-full px-4">
+        <Input id="image" v-model="modelProduct.image" labelText="Imagen" type="url" />
+      </div>
       <div class="w-full lg:w-6/12 px-4">
         <Select 
           id="category_id" 
@@ -56,16 +56,16 @@ import Checkbox from "@/components/Inputs/Checkbox.vue";
 import { postProduct } from "../../../api/product.js";
 import { getCategory  } from "../../../api/category.js";
 
-const modelProduct = ref([{
+const modelProduct = {
    name: '',
    description: '',
-   price: '',
-   stock: '',
-   slug: '',
+   price: ``,
+   stock: ``,
+   slug: 'ostras',
    image: '',
-   status: '',
-   category_id: ''
-}]);
+   status: false,
+   category_id: 0
+};
 //Opciones para el campo selecte
 const selectOptions = ref( [ // Opciones para el campo de selección
         { id: 1, name: 'Opción 1' },
@@ -97,7 +97,7 @@ const productData = {
   status: true,
   category_id: 1
 };
-    const res = await postProduct({ json: JSON.stringify(productData) });
+    const res = await postProduct({ json: JSON.stringify(modelProduct) });
     console.log(res);
     alert(res.data.message);
     // Limpia el formulario después de enviar los datos
