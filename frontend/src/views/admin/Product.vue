@@ -33,7 +33,7 @@ const columnas = ref([
   { key: "price", label: "Precio"},
   { key: "stock", label: "Cantidad" },
   { key: "slug", label: "Slug" },
-  { key: "image", label: "Imagen"},
+  { key: "image", label: "Imagen", image: true},
   { key: "status", label: "Estado" },
   { key: "category", label: "Categoria" },
   { key: "created", label: "Creado" },

@@ -52,7 +52,8 @@ class ProductsController extends Controller
 
             if ($validator->fails()) {
                 // Devolver error de validación
-                return response()->json($validator->errors(), 400);
+                return response()->json(['status' => 'error', 'message' => 'Error de validación', 'errors' => $validator->errors()], 400);
+                //return response()->json($validator->errors(), 400);
             }
 
             // Crear y guardar el producto
@@ -61,7 +62,7 @@ class ProductsController extends Controller
             // Devolver respuesta
             return response()->json(['status' => 'success', 'product' => $product], 201);
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ningún producto'], 400);
+            return response()->json(['status' => 'error', 'message' => 'No se envió ningún producto', 'json' => $json, 'request' => $request], 400);
         }
     }
 
