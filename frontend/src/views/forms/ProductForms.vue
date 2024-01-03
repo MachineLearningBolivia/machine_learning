@@ -26,18 +26,18 @@
         <Input id="image" labelText="Imagen" type="file" />
       </div> -->
       <div class="w-full lg:w-6/12 px-4">
-        <Select id="category_id" labelText="Categoria" v-model="modelProduct.category_id"/>
+        <Select 
+          id="category_id" 
+          labelText="Categoria" 
+          v-model="modelProduct.category_id"
+          :modelValue="selectedValue"
+          :errors="selectErrors"
+          :options="itemsDisplay"
+          name="name"
+          :disabled="isDisabled"
+          @update:modelValue="updateSelectedValue"
+        />
           
-    <Select
-      id="mySelect" 
-      labelText="Etiqueta del selector" 
-      :modelValue="selectedValue"
-      :errors="selectErrors"
-      :options="selectOptions"
-      name="name"
-      :disabled="isDisabled"
-      @update:modelValue="updateSelectedValue"
-    />
       </div>
       <div class="w-full lg:w-6/12 px-4">
         <Checkbox id="status" labelText="Disponible" v-model="modelProduct.status"/>
@@ -47,13 +47,14 @@
 </template>
 <script setup>
 import { toast } from "vue-sonner";
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import Forms from "@/components/Cards/Forms.vue";
 import Input from "@/components/Inputs/Input.vue";
 import Select from "@/components/Inputs/Select.vue";
 import Checkbox from "@/components/Inputs/Checkbox.vue";
 
 import { postProduct } from "../../../api/product.js";
+import { getCategory  } from "../../../api/category.js";
 
 const modelProduct = ref([{
    name: '',
@@ -65,8 +66,24 @@ const modelProduct = ref([{
    status: '',
    category_id: ''
 }]);
+//Opciones para el campo selecte
+const selectOptions = ref( [ // Opciones para el campo de selección
+        { id: 1, name: 'Opción 1' },
+        { id: 2, name: 'Opción 2' },
+        { id: 3, name: 'Opción 3' },
+        { id: 4, name: 'Opción 4' },
+        { id: 5, name: 'Opción 5' },
+        // ... otras opciones
+      ]);
+const isDisabled = false;
+const selectedValue = ''; 
+// opciones para get category
+const items = ref([]);
+const load = ref(true);
+const itemsDisplay = ref([]);
 
 
+// funcion para el envio de post
 async function handleSubmit() {
 
   try {
@@ -80,7 +97,6 @@ const productData = {
   status: true,
   category_id: 1
 };
-    console.log(productData);
     const res = await postProduct({ json: JSON.stringify(productData) });
     console.log(res);
     alert(res.data.message);
@@ -101,6 +117,25 @@ const productData = {
     alert("Error al enviar el producto. Por favor, verifica los datos e intenta nuevamente.");
   }
 }
-async function saveProduct() {
+async function loadData() {
+  load.value = true;
+  try {
+    const res = await getCategory();
+    items.value = res.data;
+    itemsDisplay.value = items.value.data;
+    load.value = false;
+    console.log(items.value);
+    //console.log(items.value.data[3]);
+    //console.log(itemsDisplay.value[0]);
+    console.log(itemsDisplay);
+    //console.log(items.value[0]);
+  } catch (error) {
+    toast.error("Error al cargar datos");
+  }
+
 }
+onMounted(() => {
+  loadData();
+});
+
 </script>
