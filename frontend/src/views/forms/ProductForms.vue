@@ -11,7 +11,10 @@
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-6/12 px-4">
-        <Input id="name" labelText="Nombre" type="text" v-model="modelProduct.name"/>
+        <Input id="name" labelText="Nombre" type="text" v-model="modelProduct.name" @input="generarSlug"/>
+      </div>
+      <div class="w-full lg:w-6/12 px-4">
+        <Input id="slug" labelText="sluggg" type="text" v-model="modelProduct.slug"/>
       </div>
       <div class="w-full lg:w-6/12 px-4">
         <Input id="description" labelText="Descripción" type="text" v-model="modelProduct.description" />
@@ -25,6 +28,9 @@
       <!-- <div class="w-full lg:w-full px-4">
         <Input id="image" labelText="Imagen" type="file" />
       </div> -->
+      <div class="w-full lg:w-full px-4">
+        <Input id="image" labelText="Imagen" type="text" v-model="modelProduct.image"/>
+      </div>
       <div class="w-full lg:w-6/12 px-4">
         <Select 
           id="category_id" 
@@ -42,6 +48,16 @@
       <div class="w-full lg:w-6/12 px-4">
         <Checkbox id="status" labelText="Disponible" v-model="modelProduct.status"/>
       </div>
+      <h3>
+        {{modelProduct.name}}
+        {{modelProduct.slug}}
+        {{modelProduct.description}}
+        {{modelProduct.price}}
+        {{modelProduct.stock}}
+        {{modelProduct.image}}
+        {{modelProduct.category_id}}
+        {{modelProduct.status}}
+      </h3>
     </div>
   </Forms>
 </template>
@@ -57,46 +73,47 @@ import { postProduct } from "../../../api/product.js";
 import { getCategory  } from "../../../api/category.js";
 
 const modelProduct = ref([{
-   name: '',
+   name: 'd',
    description: '',
-   price: '',
-   stock: '',
-   slug: '',
+   price: 1.0,
+   stock: 100,
+   slug: 'A',
    image: '',
    status: '',
    category_id: ''
 }]);
 //Opciones para el campo selecte
-const selectOptions = ref( [ // Opciones para el campo de selección
-        { id: 1, name: 'Opción 1' },
-        { id: 2, name: 'Opción 2' },
-        { id: 3, name: 'Opción 3' },
-        { id: 4, name: 'Opción 4' },
-        { id: 5, name: 'Opción 5' },
-        // ... otras opciones
-      ]);
 const isDisabled = false;
 const selectedValue = ''; 
 // opciones para get category
 const items = ref([]);
 const load = ref(true);
 const itemsDisplay = ref([]);
-
+async function generarSlug() {
+      // Función para generar el slug a partir del nombre del producto
+      console.log("holaaaaaaaa");
+      modelProduct.slug = modelProduct.value[0].name;
+      /*
+        .toLowerCase() // Convertir a minúsculas
+        .replace(/\s+/g, '-') // Reemplazar espacios con guiones
+        .replace(/[^a-z0-9-]/g, ''); // Quitar caracteres especiales
+        */
+      console.log(modelProduct.value[0].name);
+    }
 
 // funcion para el envio de post
 async function handleSubmit() {
-
   try {
-const productData = {
-  name: 'Nombre del producto',
-  description: 'Descripción del producto',
-  price: 29.99,
-  stock: 100,
-  slug: 'slug-del-producto',
-  image: 'url-de-la-imagen.jpg',
-  status: true,
-  category_id: 1
-};
+    const productData = {
+      name: modelProduct.name,
+      description: modelProduct.description, 
+      price: modelProduct.price,
+      stock: modelProduct.stock,
+      slug: modelProduct.slug,
+      image: modelProduct.image,
+      status: true,
+      category_id: 1
+    };
     const res = await postProduct({ json: JSON.stringify(productData) });
     console.log(res);
     alert(res.data.message);
