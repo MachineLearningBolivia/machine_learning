@@ -25,11 +25,8 @@
       <div class="w-full lg:w-6/12 px-4">
         <Input id="stock" labelText="Cantidad" type="number" v-model="modelProduct.stock" />
       </div>
-      <!-- <div class="w-full lg:w-full px-4">
-        <Input id="image" labelText="Imagen" type="file" />
-      </div> -->
       <div class="w-full lg:w-full px-4">
-        <Input id="image" labelText="Imagen" type="text" v-model="modelProduct.image"/>
+        <Input id="image" v-model="modelProduct.image" labelText="Imagen" type="url" />
       </div>
       <div class="w-full lg:w-6/12 px-4">
         <Select 
@@ -72,16 +69,16 @@ import Checkbox from "@/components/Inputs/Checkbox.vue";
 import { postProduct } from "../../../api/product.js";
 import { getCategory  } from "../../../api/category.js";
 
-const modelProduct = ref([{
-   name: 'd',
+const modelProduct = {
+   name: '',
    description: '',
-   price: 1.0,
-   stock: 100,
-   slug: 'A',
+   price: ``,
+   stock: ``,
+   slug: 'ostras',
    image: '',
-   status: '',
-   category_id: ''
-}]);
+   status: false,
+   category_id: 0
+};
 //Opciones para el campo selecte
 const isDisabled = false;
 const selectedValue = ''; 
@@ -104,17 +101,17 @@ async function generarSlug() {
 // funcion para el envio de post
 async function handleSubmit() {
   try {
-    const productData = {
-      name: modelProduct.name,
-      description: modelProduct.description, 
-      price: modelProduct.price,
-      stock: modelProduct.stock,
-      slug: modelProduct.slug,
-      image: modelProduct.image,
-      status: true,
-      category_id: 1
-    };
-    const res = await postProduct({ json: JSON.stringify(productData) });
+const productData = {
+  name: 'Nombre del producto',
+  description: 'Descripción del producto',
+  price: 29.99,
+  stock: 100,
+  slug: 'slug-del-producto',
+  image: 'url-de-la-imagen.jpg',
+  status: true,
+  category_id: 1
+};
+    const res = await postProduct({ json: JSON.stringify(modelProduct) });
     console.log(res);
     alert(res.data.message);
     // Limpia el formulario después de enviar los datos
