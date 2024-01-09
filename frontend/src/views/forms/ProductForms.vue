@@ -74,7 +74,7 @@ const modelProduct = {
    description: '',
    price: ``,
    stock: ``,
-   slug: 'ostras',
+   slug: '',
    image: '',
    status: false,
    category_id: 0

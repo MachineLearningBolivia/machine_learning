@@ -17,7 +17,7 @@ class CategoriesController extends Controller
             $queryItems = $filter->transform($request);
 
             $categories = Category::where($queryItems);
-            return new CategoryCollection($categories->paginate()->appends($request->query()));
+            return new CategoryCollection($categories->paginate($categories->count())->appends($request->query()));
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -48,7 +48,7 @@ class CategoriesController extends Controller
             // Devolver respuesta
             return response()->json(['status' => 'success', 'category' => $category], 201);
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna categoría'], 400);
+            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna categoría', 'json' => $json, 'request' => $request], 400);
         }
     }
 
