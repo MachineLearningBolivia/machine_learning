@@ -11,10 +11,10 @@
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-full px-4">
-        <Input id="name" labelText="Nombre" type="text" v-model="modelCategory.name" />
+        <Input id="name" labelText="Nombre" type="text" v-model="modelCategory.name" placeholder="Nombre de la categoria"/>
       </div>
       <div class="w-full lg:w-full px-4">
-        <Input id="description" labelText="Descripción" type="text" v-model="modelCategory.description" />
+        <Input id="description" labelText="Descripción" type="text" v-model="modelCategory.description" placeholder="Descripcion de la categoria"/>
       </div>
     </div>
   </Forms>
@@ -47,8 +47,7 @@ async function handleSubmit() {
     };
     toast.success("Informacion actualizada correctamente");
   } catch (error) {
-    console.error("Error al enviar el producto:", error);
-    alert("Error al enviar el producto. Por favor, verifica los datos e intenta nuevamente.");
+    toast.error("Error al añadir la categoria, por favor verifique que los datos esten correctos")
   }
 }
 

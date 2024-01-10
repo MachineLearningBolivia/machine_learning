@@ -17,9 +17,6 @@ import CardData from "@/components/Cards/CardData.vue";
 import Search from "@/components/Inputs/Search.vue";
 import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import DataTable from "@/components/Tables/DataTable.vue";
-
-//import { getProduct } from "@/api/product.js";
-
 import { ref, onMounted } from "vue";
 
 const items = ref([]);
@@ -27,17 +24,17 @@ const load = ref(true);
 const itemsDisplay = ref([]);
 
 const columnas = ref([
-  { key: "id", label: "ID" },
+  //{ key: "id", label: "ID" },
   { key: "name", label: "Nombre" },
   { key: "description", label: "Descripción" },
   { key: "price", label: "Precio"},
   { key: "stock", label: "Cantidad" },
-  { key: "slug", label: "Slug" },
+  //{ key: "slug", label: "Slug" },
   { key: "image", label: "Imagen", image: true},
-  { key: "status", label: "Estado" },
-  { key: "category", label: "Categoria" },
-  { key: "created", label: "Creado" },
-  { key: "updated", label: "Subido" },
+  //{ key: "status", label: "Estado" },
+  //{ key: "category", label: "Categoria" },
+  //{ key: "created", label: "Creado" },
+  //{ key: "updated", label: "Subido" },
 ]);
 
 async function loadData() {
@@ -45,7 +42,7 @@ async function loadData() {
   try {
     const res = await getProduct();
     items.value = res.data;
-    console.log(res)
+    //console.log(res)
     itemsDisplay.value = items.value.data;
     load.value = false;
     //console.log(items.value);

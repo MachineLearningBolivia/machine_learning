@@ -34,7 +34,7 @@ async function loadData() {
   try {
     const res = await getCategory();
     items.value = res.data;
-    console.log(res)
+    //console.log(res)
     itemsDisplay.value = items.value.data;
     load.value = false;
     //console.log(items.value);
