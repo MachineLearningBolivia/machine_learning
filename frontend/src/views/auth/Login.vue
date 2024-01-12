@@ -81,6 +81,6 @@
 </template>
 <script setup>
 import { useDark, useToggle } from "@vueuse/core";
-
+import { required, email, minLength, helpers } from "@vuelidate/validators";
 const isDark = useDark();
 </script>

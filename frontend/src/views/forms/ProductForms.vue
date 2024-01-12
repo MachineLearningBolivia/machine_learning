@@ -11,22 +11,22 @@
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-6/12 px-4">
-        <Input id="name" labelText="Nombre" type="text" v-model="modelProduct.name" @input="generarSlug"/>
+        <Input id="name" labelText="Nombre" type="text" v-model="modelProduct.name" placeholder="Nombre del producto"/>
       </div>
       <div class="w-full lg:w-6/12 px-4">
-        <Input id="slug" labelText="sluggg" type="text" v-model="modelProduct.slug"/>
+        <Input id="slug" labelText="sluggg" type="text" v-model="modelProduct.slug" placeholder="slug del producto"/>
       </div>
       <div class="w-full lg:w-6/12 px-4">
-        <Input id="description" labelText="Descripción" type="text" v-model="modelProduct.description" />
+        <Input id="description" labelText="Descripción" type="text" v-model="modelProduct.description" placeholder="Descripcion del producto"/>
       </div>
       <div class="w-full lg:w-6/12 px-4">
-        <Input id="price" labelText="Precio" type="number" v-model="modelProduct.price" />
+        <Input id="price" labelText="Precio" type="number" v-model="modelProduct.price" placeholder="Precio del producto"/>
       </div>
       <div class="w-full lg:w-6/12 px-4">
-        <Input id="stock" labelText="Cantidad" type="number" v-model="modelProduct.stock" />
+        <Input id="stock" labelText="Cantidad" type="number" v-model="modelProduct.stock" placeholder="Cantidad del producto"/>
       </div>
       <div class="w-full lg:w-full px-4">
-        <Input id="image" v-model="modelProduct.image" labelText="Imagen" type="url" />
+        <Input id="image" v-model="modelProduct.image" labelText="Imagen" type="url" placeholder="Link de la imagen del producto"/>
       </div>
       <div class="w-full lg:w-6/12 px-4">
         <Select 
@@ -45,16 +45,6 @@
       <div class="w-full lg:w-6/12 px-4">
         <Checkbox id="status" labelText="Disponible" v-model="modelProduct.status"/>
       </div>
-      <h3>
-        {{modelProduct.name}}
-        {{modelProduct.slug}}
-        {{modelProduct.description}}
-        {{modelProduct.price}}
-        {{modelProduct.stock}}
-        {{modelProduct.image}}
-        {{modelProduct.category_id}}
-        {{modelProduct.status}}
-      </h3>
     </div>
   </Forms>
 </template>
@@ -74,7 +64,7 @@ const modelProduct = {
    description: '',
    price: ``,
    stock: ``,
-   slug: 'ostras',
+   slug: '',
    image: '',
    status: false,
    category_id: 0
@@ -127,29 +117,8 @@ const productData = {
     };
     toast.success("Información actualizada correctamente");
   } catch (error) {
-    console.error("Error al enviar el producto:", error);
-    alert("Error al enviar el producto. Por favor, verifica los datos e intenta nuevamente.");
+    toast.error("Error al enviar el producto")
   }
 }
-async function loadData() {
-  load.value = true;
-  try {
-    const res = await getCategory();
-    items.value = res.data;
-    itemsDisplay.value = items.value.data;
-    load.value = false;
-    console.log(items.value);
-    //console.log(items.value.data[3]);
-    //console.log(itemsDisplay.value[0]);
-    console.log(itemsDisplay);
-    //console.log(items.value[0]);
-  } catch (error) {
-    toast.error("Error al cargar datos");
-  }
-
-}
-onMounted(() => {
-  loadData();
-});
 
 </script>

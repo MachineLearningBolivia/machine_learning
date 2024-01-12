@@ -25,7 +25,7 @@ class SalesController extends Controller
                 }
             }
 
-            return new SaleCollection($sales->paginate()->appends($request->query()));
+            return new SaleCollection($sales->paginate($sales->count())->appends($request->query()));
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

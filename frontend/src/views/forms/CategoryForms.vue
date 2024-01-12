@@ -11,21 +11,44 @@
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-full px-4">
-        <Input id="name" labelText="Nombre" type="text" />
+        <Input id="name" labelText="Nombre" type="text" v-model="modelCategory.name" placeholder="Nombre de la categoria"/>
       </div>
       <div class="w-full lg:w-full px-4">
-        <Input id="description" labelText="Descripción" type="text" />
+        <Input id="description" labelText="Descripción" type="text" v-model="modelCategory.description" placeholder="Descripcion de la categoria"/>
       </div>
     </div>
   </Forms>
 </template>
 <script setup>
 import { toast } from "vue-sonner";
-
+import { postCategory } from "../../../api/category";
+import { ref, onMounted } from 'vue';
 import Forms from "@/components/Cards/Forms.vue";
 import Input from "@/components/Inputs/Input.vue";
+const modelCategory = {
+   name: '',
+   description: '',
+   slug: 'ostras',
+};
+const isDisabled = false;
+const selectedValue = ''; 
+// opciones para get category
+const items = ref([]);
+const load = ref(true);
+const itemsDisplay = ref([]);
 
 async function handleSubmit() {
-  toast.success("Informacion actualizada correctamente");
+  try {
+    const res = await postCategory({ json: JSON.stringify(modelCategory) });
+    modelCategory.value = {
+      name: '',
+      description: '',
+      slug: '',
+    };
+    toast.success("Informacion actualizada correctamente");
+  } catch (error) {
+    toast.error("Error al añadir la categoria, por favor verifique que los datos esten correctos")
+  }
 }
+
 </script>

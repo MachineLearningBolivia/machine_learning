@@ -58,8 +58,8 @@
                 <v-icon :name="[item[column.key] ? 'fa-check' : 'fa-times']"
               /></span>
             </span>
-            <span v-else-if="column.image"> <!-- Condición para mostrar una imagen -->
-              <img :src="item[column.key]" alt="Imagen" /> <!-- Mostrar imagen usando la URL almacenada en el campo correspondiente -->
+            <span v-else-if="column.image">
+              <img :src="item[column.key]" alt="imagen" class="w-16 h-16 object-cover rounded-full" />
             </span>
             <span v-else>
               {{ item[column.key] }}

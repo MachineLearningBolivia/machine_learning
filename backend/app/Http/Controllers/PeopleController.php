@@ -17,7 +17,7 @@ class PeopleController extends Controller
             $queryItems = $filter->transform($request);
 
             $people = Person::where($queryItems);
-            return new PersonCollection($people->paginate()->appends($request->query()));
+            return new PersonCollection($people->paginate($people->count())->appends($request->query()));
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

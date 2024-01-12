@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,14 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 }); */
 
+Route::post('auth/register', [AuthController::class, 'create']);
+Route::post('auth/login', [AuthController::class, 'login']);
+
+// Route::middleware(['auth:sanctum'])->group(function () {
+//     //
+// });
+
+
 Route::namespace('App\Http\Controllers')->group(function () {
     Route::apiResource('boxes', BoxesController::class);
     Route::apiResource('categories', CategoriesController::class);
@@ -29,3 +38,5 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::apiResource('sales', SalesController::class);
     Route::apiResource('users', UserController::class);
 });
+
+Route::get('auth/logout', [AuthController::class, 'logout']);
