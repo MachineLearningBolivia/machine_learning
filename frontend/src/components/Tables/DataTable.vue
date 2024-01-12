@@ -185,13 +185,13 @@ const currentPage = ref(1);
 const itemsPerPage = ref(5);
 const itemsDisplay = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value;
-  console.log(itemsPerPage.value)
+  //console.log(itemsPerPage.value)
   const end = start + itemsPerPage.value;
   return props.items.slice(start, end);
 });
 
 const totalPages = computed(() => {
-  console.log(props.items.length)
+  //console.log(props.items.length)
   return Math.ceil(props.items.length / itemsPerPage.value);
 });
 </script>

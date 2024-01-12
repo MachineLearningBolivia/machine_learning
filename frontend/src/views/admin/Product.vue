@@ -2,7 +2,7 @@
   <card-data title="Productos" icon="fa-cubes">
     <template v-slot:filters>
       <div class="pb-4">
-        <Search />
+        <Search v-model="searchQuery" />
       </div>
       <button-add to="/newProduct"> Agregar Producto </button-add>
     </template>
@@ -17,11 +17,12 @@ import CardData from "@/components/Cards/CardData.vue";
 import Search from "@/components/Inputs/Search.vue";
 import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import DataTable from "@/components/Tables/DataTable.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 
 const items = ref([]);
 const load = ref(true);
 const itemsDisplay = ref([]);
+const searchQuery = ref("");
 
 const columnas = ref([
   //{ key: "id", label: "ID" },
@@ -52,6 +53,19 @@ async function loadData() {
   } catch (error) {
     toast.error("Error al cargar datos");
   }
+}
+watch(searchQuery, () => {
+  searchItems();
+});
+
+function searchItems() {
+  console.log(itemsDisplay.value)
+  const filteredItems = items.value.data.filter(
+    (item) =>
+      item.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+  itemsDisplay.value = filteredItems;
 }
 
 
