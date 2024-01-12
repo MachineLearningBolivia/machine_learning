@@ -13,6 +13,6 @@ class Box extends Model
 
     public function operation()
     {
-        return $this->hasMany(Operation::class);
+        return $this->hasMany(Operation::class, 'box_id');
     }
 }
