@@ -16,7 +16,7 @@ import CardData from "@/components/Cards/CardData.vue";
 import Search from "@/components/Inputs/Search.vue";
 import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import DataTable from "@/components/Tables/DataTable.vue";
-import { getPeople } from "../../../api/people";
+import { getPeople } from "@/api/people";
 const items = ref([]);
 const load = ref(true);
 const itemsDisplay = ref([]);

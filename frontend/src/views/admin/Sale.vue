@@ -13,7 +13,7 @@
 import CardData from "@/components/Cards/CardData.vue";
 import Search from "@/components/Inputs/Search.vue";
 import DataTable from "@/components/Tables/DataTable.vue";
-import { getSale } from "../../../api/sale"
+import { getSale } from "@/api/sale"
 import { ref, onMounted } from "vue";
 
 const items = ref([]);

@@ -51,7 +51,7 @@ const props = defineProps({
     default: "",
   },
 });
-const emit = defineEmits(["save"]);
+const emit = defineEmits(["handleSubmit"]);
 
 function handleSubmit(e) {
   if (e) e.preventDefault();

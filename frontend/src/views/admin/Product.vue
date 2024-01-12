@@ -12,7 +12,7 @@
 </template>
 <script setup>
 
-import { getProduct } from "../../../api/product.js"
+import { getProduct } from "@/api/product.js"
 import CardData from "@/components/Cards/CardData.vue";
 import Search from "@/components/Inputs/Search.vue";
 import ButtonAdd from "@/components/button/ButtonAdd.vue";

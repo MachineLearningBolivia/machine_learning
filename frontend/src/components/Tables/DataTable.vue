@@ -16,9 +16,9 @@
           >
             {{ column.label }}
           </th>
-          <!-- <th v-if="options.length > 0" class="px-4 py-3">
+          <th v-if="options.length > 0" class="px-4 py-3">
             <span>Acciones</span>
-          </th>  -->
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -59,7 +59,11 @@
               /></span>
             </span>
             <span v-else-if="column.image">
-              <img :src="item[column.key]" alt="imagen" class="w-16 h-16 object-cover rounded-full" />
+              <img
+                :src="item[column.key]"
+                alt="imagen"
+                class="w-16 h-16 object-cover rounded-full"
+              />
             </span>
             <span v-else>
               {{ item[column.key] }}
@@ -194,4 +198,8 @@ const totalPages = computed(() => {
   //console.log(props.items.length)
   return Math.ceil(props.items.length / itemsPerPage.value);
 });
+
+function action(data) {
+  emit("action", data);
+}
 </script>

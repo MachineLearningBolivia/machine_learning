@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import Cookies from "js-cookie";
-import { loginRequest } from "../../api/auth";
+import { loginRequest } from "@/api/auth";
 
 export const useProfileStore = defineStore("profile", {
   state: () => ({ user: {}, isAuthenticated: false }),

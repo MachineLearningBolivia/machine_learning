@@ -27,7 +27,7 @@ import { toast } from "vue-sonner";
 import { ref, onMounted } from 'vue';
 import Forms from "@/components/Cards/Forms.vue";
 import Input from "@/components/Inputs/Input.vue";
-import { postPeople } from "../../../api/people"
+import { postPeople } from "@/api/people"
 const modelPeople = {
    name: '',
    country: '',

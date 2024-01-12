@@ -16,7 +16,7 @@ import Search from "@/components/Inputs/Search.vue";
 import DataTable from "@/components/Tables/DataTable.vue";
 import ButtonAdd from "@/components/button/ButtonAdd.vue";
 
-import { getBox } from "../../../api/box.js"
+import { getBox } from "@/api/box.js"
 import { ref, onMounted } from "vue";
 
 const items = ref([]);

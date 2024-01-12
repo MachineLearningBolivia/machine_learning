@@ -56,8 +56,8 @@ import Input from "@/components/Inputs/Input.vue";
 import Select from "@/components/Inputs/Select.vue";
 import Checkbox from "@/components/Inputs/Checkbox.vue";
 
-import { postProduct } from "../../../api/product.js";
-import { getCategory  } from "../../../api/category.js";
+import { postProduct } from "@/api/product.js";
+import { getCategory  } from "@/api/category.js";
 
 const modelProduct = {
    name: '',

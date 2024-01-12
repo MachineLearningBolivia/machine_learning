@@ -1,54 +1,101 @@
 <template>
   <Forms
-    title="Información de categoria"
+    title="Información de categoría"
     icon="fa-list-alt"
     @handleSubmit="handleSubmit"
   >
     <h6
       class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
     >
-      Datos de la categoria
+      Datos de la categoría
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-full px-4">
-        <Input id="name" labelText="Nombre" type="text" v-model="modelCategory.name" placeholder="Nombre de la categoria"/>
+        <Input
+          id="name"
+          labelText="Nombre"
+          v-model="v$.name.$model"
+          :errors="v$.name.$errors"
+          type="text"
+        />
       </div>
       <div class="w-full lg:w-full px-4">
-        <Input id="description" labelText="Descripción" type="text" v-model="modelCategory.description" placeholder="Descripcion de la categoria"/>
+        <Input
+          id="description"
+          labelText="Descripción"
+          v-model="v$.description.$model"
+          :errors="v$.description.$errors"
+          type="text"
+        />
       </div>
     </div>
   </Forms>
 </template>
 <script setup>
+import { postCategory, getCategoryId } from "@/api/category";
+import { useRoute, useRouter } from "vue-router";
+import { reactive, ref, onMounted } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { helpers, required } from "@vuelidate/validators";
 import { toast } from "vue-sonner";
-import { postCategory } from "../../../api/category";
-import { ref, onMounted } from 'vue';
 import Forms from "@/components/Cards/Forms.vue";
 import Input from "@/components/Inputs/Input.vue";
-const modelCategory = {
-   name: '',
-   description: '',
-   slug: 'ostras',
-};
-const isDisabled = false;
-const selectedValue = ''; 
-// opciones para get category
-const items = ref([]);
-const load = ref(true);
-const itemsDisplay = ref([]);
 
-async function handleSubmit() {
-  try {
-    const res = await postCategory({ json: JSON.stringify(modelCategory) });
-    modelCategory.value = {
-      name: '',
-      description: '',
-      slug: '',
-    };
-    toast.success("Informacion actualizada correctamente");
-  } catch (error) {
-    toast.error("Error al añadir la categoria, por favor verifique que los datos esten correctos")
+const route = useRoute();
+const router = useRouter();
+const formData = reactive({
+  name: "",
+  description: "",
+});
+const rules = {
+  name: {
+    required: helpers.withMessage("Se requiere el nombre", required),
+  },
+  description: {
+    required: helpers.withMessage("Se requiere la descripción", required),
+  },
+  slug: {},
+};
+const v$ = useVuelidate(rules, formData);
+const errors = ref([]);
+
+async function handleSubmit(event) {
+  const isFormCorrect = await v$.value.$validate();
+  if (isFormCorrect) {
+    try {
+      if (!route.query.id) {
+        formData.slug = createSlug(formData.name);
+        await postCategory(formData);
+        toast.success("Categoría guardada correctamente");
+      } else {
+        toast.success("Categoría actualizada correctamente");
+      }
+      router.push("/category");
+    } catch (error) {
+      toast.error(
+        "Error al añadir la categoría, por favor verifique que los datos estén correctos"
+      );
+    }
   }
 }
 
+function createSlug(text) {
+  let withoutSpaces = text.replace(/\s+/g, "-");
+  let withoutAccent = withoutSpaces
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+  return withoutAccent;
+}
+
+onMounted(async () => {
+  if (route.query.id) {
+    const res = await getCategoryId(route.query.id);
+    Object.assign(formData, res.data.category);
+    try {
+    } catch (error) {
+      toast.error("Error al cargar datos");
+      router.push("/category");
+    }
+  }
+});
 </script>
