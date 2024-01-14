@@ -1,7 +1,9 @@
 import axios from "./axios";
 
-export const getProduct = () => axios.get("/products");
-//export const postProduct = (productData) => axios.post("/products", productData);
-export const postProduct = (productData) => {
-  return axios.post("/products", productData);
+export const postProduct = (product) => {
+  return axios.post("/products", product);
 };
+
+export const getProducts = () => axios.get("/products");
+
+export const getProduct = (id) => axios.get("/products/" + id);

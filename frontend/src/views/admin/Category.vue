@@ -17,7 +17,7 @@
   </card-data>
 </template>
 <script setup>
-import { getCategory } from "@/api/category.js";
+import { getCategories } from "@/api/category.js";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -41,7 +41,7 @@ const options = ref([{ id: "update", name: "Actualizar", icon: "fa-plus" }]);
 async function loadData() {
   load.value = true;
   try {
-    const res = await getCategory();
+    const res = await getCategories();
     items.value = res.data;
     itemsDisplay.value = items.value.data;
     load.value = false;

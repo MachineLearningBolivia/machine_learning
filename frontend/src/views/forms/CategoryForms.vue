@@ -32,7 +32,7 @@
   </Forms>
 </template>
 <script setup>
-import { postCategory, getCategoryId } from "@/api/category";
+import { postCategory, getCategory } from "@/api/category";
 import { useRoute, useRouter } from "vue-router";
 import { reactive, ref, onMounted } from "vue";
 import { useVuelidate } from "@vuelidate/core";
@@ -80,18 +80,16 @@ async function handleSubmit(event) {
 }
 
 function createSlug(text) {
-  let withoutSpaces = text.replace(/\s+/g, "-");
-  let withoutAccent = withoutSpaces
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-  return withoutAccent;
+  let spaces = text.replace(/\s+/g, "-");
+  let accents = spaces.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return accents.toLowerCase();
 }
 
 onMounted(async () => {
   if (route.query.id) {
-    const res = await getCategoryId(route.query.id);
-    Object.assign(formData, res.data.category);
     try {
+      const res = await getCategory(route.query.id);
+      Object.assign(formData, res.data.category);
     } catch (error) {
       toast.error("Error al cargar datos");
       router.push("/category");
