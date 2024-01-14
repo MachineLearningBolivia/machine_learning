@@ -149,37 +149,49 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  let ok = false;
-  let path = "";
-  const profileStore = useProfileStore();
-  if (!profileStore.isAuthenticated) {
-    try {
-      // verificar token
-    } catch (error) {
-      console.error("Error loading user data:", error);
-    }
-  }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!profileStore.isAuthenticated) {
-      path = "/auth/login";
-      ok = false;
+    // acceso a admin
+    const isAuthenticated = true;
+    if (!isAuthenticated) {
+      next("/auth/login");
     } else {
-      ok = true;
+      next();
     }
-  }
-  if (to.matched.some((record) => record.meta.notAuthenticated)) {
-    if (profileStore.isAuthenticated) {
-      ok = false;
-      path = "/";
-    } else {
-      ok = true;
-    }
-  }
-  if (ok) {
-    next();
   } else {
-    next({ path });
+    next();
   }
+
+  // let ok = false;
+  // let path = "";
+  // const profileStore = useProfileStore();
+  // if (!profileStore.isAuthenticated) {
+  //   try {
+  //     // verificar token
+  //   } catch (error) {
+  //     console.error("Error loading user data:", error);
+  //   }
+  // }
+  // if (to.matched.some((record) => record.meta.requiresAuth)) {
+  //   if (!profileStore.isAuthenticated) {
+  //     path = "/auth/login";
+  //     ok = false;
+  //   } else {
+  //     ok = true;
+  //   }
+  // }
+  // if (to.matched.some((record) => record.meta.notAuthenticated)) {
+  //   if (profileStore.isAuthenticated) {
+  //     ok = false;
+  //     path = "/";
+  //   } else {
+  //     ok = true;
+  //   }
+  // }
+  // if (ok) {
+  //   next();
+  // } else {
+  //   next({ path });
+  // }
 });
 
 export default router;
