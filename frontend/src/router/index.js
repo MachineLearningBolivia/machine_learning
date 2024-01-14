@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useProfileStore } from "@/stores/profile";
 
 import Admin from "@/templates/Layout.vue";
 import Auth from "@/templates/Auth.vue";
@@ -148,16 +149,36 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    // acceso a admin
-    const isAuthenticated = true;
-    if (!isAuthenticated) {
-      next("/auth/login");
-    } else {
-      next();
+  let ok = false;
+  let path = "";
+  const profileStore = useProfileStore();
+  if (!profileStore.isAuthenticated) {
+    try {
+      // verificar token
+    } catch (error) {
+      console.error("Error loading user data:", error);
     }
-  } else {
+  }
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!profileStore.isAuthenticated) {
+      path = "/auth/login";
+      ok = false;
+    } else {
+      ok = true;
+    }
+  }
+  if (to.matched.some((record) => record.meta.notAuthenticated)) {
+    if (profileStore.isAuthenticated) {
+      ok = false;
+      path = "/";
+    } else {
+      ok = true;
+    }
+  }
+  if (ok) {
     next();
+  } else {
+    next({ path });
   }
 });
 

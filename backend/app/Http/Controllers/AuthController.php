@@ -13,14 +13,14 @@ class AuthController extends Controller
     public function create(Request $request)
     {
         $rules = [
-            'name'=>'required|string|max:100',
-            'surname'=>'required|string',
-            'role'=>'required|string',
-            'email'=>'required|string|email|max:100|unique:users',
-            'password'=>'required|string|min:8',
-            'phone'=>'required|string',
-            'avatar'=>'required|string',
-            'status'=>'required|string',
+            'name' => 'required|string|max:100',
+            'surname' => 'required|string',
+            'role' => 'required|string',
+            'email' => 'required|string|email|max:100|unique:users',
+            'password' => 'required|string|min:8',
+            'phone' => 'required|string',
+            'avatar' => 'required|string',
+            'status' => 'required|string',
 
         ];
         $validator = Validator::make($request->input(), $rules);
@@ -35,13 +35,13 @@ class AuthController extends Controller
         }
         $user = User::create([
             'name' => $request->name,
-            'surname'=>$request->surname,
-            'role'=>$request->role,
+            'surname' => $request->surname,
+            'role' => $request->role,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'phone'=>$request->phone,
-            'avatar'=>$request->avatar,
-            'status'=>$request->status
+            'phone' => $request->phone,
+            'avatar' => $request->avatar,
+            'status' => $request->status
         ]);
         return response()->json(
             [
@@ -53,7 +53,7 @@ class AuthController extends Controller
         );
     }
 
-    public function login(Request $request)
+    public function store(Request $request)
     {
         try {
             $rules = [
@@ -79,7 +79,16 @@ class AuthController extends Controller
                     401
                 );
             }
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->select(
+                "id",
+                "name",
+                "surname",
+                "role",
+                "email",
+                "phone",
+                "avatar",
+                "status"
+            )->first();
             return response()->json(
                 [
                     'status' => true,

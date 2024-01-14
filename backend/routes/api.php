@@ -19,8 +19,10 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 }); */
 
-Route::post('auth/register', [AuthController::class, 'create']);
-Route::post('auth/login', [AuthController::class, 'login']);
+// Route::post('login', [AuthController::class, 'login']);
+// Route::post('register', [AuthController::class, 'create']);
+
+Route::apiResource('auth', AuthController::class);
 
 // Route::middleware(['auth:sanctum'])->group(function () {
 //     //
