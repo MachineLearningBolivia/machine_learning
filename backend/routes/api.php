@@ -15,30 +15,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-}); */
+Route::post('login', [AuthController::class, 'login']);
 
-// Route::post('login', [AuthController::class, 'login']);
-// Route::post('register', [AuthController::class, 'create']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('user', [AuthController::class, 'user']);
+    Route::get('verify', [AuthController::class, 'verify']);
 
-Route::apiResource('auth', AuthController::class);
+    Route::
+            namespace('App\Http\Controllers')->group(function () {
+                Route::apiResource('boxes', BoxesController::class);
+                Route::apiResource('categories', CategoriesController::class);
+                Route::apiResource('products', ProductsController::class);
+                Route::apiResource('configurations', ConfigurationsController::class);
+                Route::apiResource('operations', OperationsController::class);
+                Route::apiResource('operationTypes', OperationTypesController::class);
+                Route::apiResource('people', PeopleController::class);
+                Route::apiResource('sales', SalesController::class);
+                Route::apiResource('users', UserController::class);
+            });
 
-// Route::middleware(['auth:sanctum'])->group(function () {
-//     //
-// });
-
-
-Route::namespace('App\Http\Controllers')->group(function () {
-    Route::apiResource('boxes', BoxesController::class);
-    Route::apiResource('categories', CategoriesController::class);
-    Route::apiResource('products', ProductsController::class);
-    Route::apiResource('configurations', ConfigurationsController::class);
-    Route::apiResource('operations', OperationsController::class);
-    Route::apiResource('operationTypes', OperationTypesController::class);
-    Route::apiResource('people', PeopleController::class);
-    Route::apiResource('sales', SalesController::class);
-    Route::apiResource('users', UserController::class);
+    Route::post('logout', [AuthController::class, 'logout']);
 });
-
-Route::get('auth/logout', [AuthController::class, 'logout']);

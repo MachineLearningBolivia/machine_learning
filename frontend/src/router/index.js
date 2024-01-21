@@ -148,50 +148,63 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    // acceso a admin
-    const isAuthenticated = true;
-    if (!isAuthenticated) {
-      next("/auth/login");
-    } else {
-      next();
+router.beforeEach(async (to, from, next) => {
+  // if (to.matched.some((record) => record.meta.requiresAuth)) {
+  //   // acceso a admin
+  //   const isAuthenticated = true;
+  //   if (!isAuthenticated) {
+  //     next("/auth/login");
+  //   } else {
+  //     next();
+  //   }
+  // } else {
+  //   next();
+  // }
+
+  let ok = false;
+  let path = "";
+  const profileStore = useProfileStore();
+
+  if (!profileStore.isAuthenticated) {
+    try {
+      await profileStore.verifyToken();
+    } catch (error) {
+      console.error("Error loading user data:", error);
     }
-  } else {
-    next();
   }
 
-  // let ok = false;
-  // let path = "";
-  // const profileStore = useProfileStore();
-  // if (!profileStore.isAuthenticated) {
-  //   try {
-  //     // verificar token
-  //   } catch (error) {
-  //     console.error("Error loading user data:", error);
-  //   }
-  // }
-  // if (to.matched.some((record) => record.meta.requiresAuth)) {
-  //   if (!profileStore.isAuthenticated) {
-  //     path = "/auth/login";
-  //     ok = false;
-  //   } else {
-  //     ok = true;
-  //   }
-  // }
-  // if (to.matched.some((record) => record.meta.notAuthenticated)) {
-  //   if (profileStore.isAuthenticated) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!profileStore.isAuthenticated) {
+      path = "/auth/login";
+      ok = false;
+    } else {
+      ok = true;
+    }
+  }
+
+  if (to.matched.some((record) => record.meta.notAuthenticated)) {
+    if (profileStore.isAuthenticated) {
+      ok = false;
+      path = "/";
+    } else {
+      ok = true;
+    }
+  }
+
+  // if (to.matched.some((record) => record.meta.requiresAdmin)) {
+  //   if (!profileStore.isAdmin) {
   //     ok = false;
   //     path = "/";
   //   } else {
   //     ok = true;
   //   }
   // }
-  // if (ok) {
-  //   next();
-  // } else {
-  //   next({ path });
-  // }
+
+  if (ok) {
+    next();
+  } else {
+    next({ path });
+  }
 });
 
 export default router;
