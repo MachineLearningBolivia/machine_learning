@@ -15,6 +15,7 @@
     "@vuelidate/validators": "^2.0.4",
     "@vueuse/core": "^10.5.0",
     "axios": "^1.6.3",
+    "echarts": "^5.4.3",
     "js-cookie": "^3.0.5",
     "oh-vue-icons": "^1.0.0-rc3",
     "pinia": "^2.1.7",
