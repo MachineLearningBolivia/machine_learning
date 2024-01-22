@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from "vue";
-// import { fullDateFormat } from "@/utils/index";
+import { fullDateFormat } from "@/utils/index";
 import TableDropdown from "@/components/Dropdown/TableDropdown.vue";
 import Dropdown from "@/components/Dropdown/Dropdown.vue";
 
@@ -29,13 +29,11 @@ const currentPage = ref(1);
 const itemsPerPage = ref(5);
 const itemsDisplay = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value;
-  //console.log(itemsPerPage.value)
   const end = start + itemsPerPage.value;
   return props.items.slice(start, end);
 });
 
 const totalPages = computed(() => {
-  //console.log(props.items.length)
   return Math.ceil(props.items.length / itemsPerPage.value);
 });
 
@@ -85,7 +83,7 @@ function action(data) {
               ></span>
             </span>
             <span v-else-if="column.date">
-              {{ dateFormated(item[column.key]) }}
+              {{ fullDateFormat(item[column.key]) }}
             </span>
             <span v-else-if="column.status" class="flex justify-center">
               <span

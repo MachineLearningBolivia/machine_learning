@@ -64,13 +64,12 @@ onMounted(() => {
       </div>
       <button-add to="/newCategory"> Agregar Categoría </button-add>
     </template>
-    <data-table
+    <DataTable
       :items="itemsDisplay"
       :columns="columns"
       :options="options"
       :modelValue="itemsDisplay"
       @action="action"
-    >
-    </data-table>
+    />
   </card-data>
 </template>

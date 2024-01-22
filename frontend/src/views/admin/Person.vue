@@ -66,13 +66,12 @@ onMounted(() => {
       </div>
       <button-add to="/newPerson"> Agregar Cliente </button-add>
     </template>
-    <data-table
+    <DataTable
       :items="itemsDisplay"
       :columns="columns"
       :options="options"
       :modelValue="itemsDisplay"
       @action="action"
-    >
-    </data-table>
+    />
   </card-data>
 </template>

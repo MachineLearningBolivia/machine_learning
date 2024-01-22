@@ -6,6 +6,7 @@ import Auth from "@/templates/Auth.vue";
 
 // views for admin layout
 import Dashboard from "@/views/admin/Dashboard.vue";
+import User from "@/views/admin/User.vue";
 import Person from "@/views/admin/Person.vue";
 import Category from "@/views/admin/Category.vue";
 import Product from "@/views/admin/Product.vue";
@@ -17,9 +18,11 @@ import Operation from "@/views/admin/Operation.vue";
 // Forms
 import Profile from "@/views/forms/ProfileForms.vue";
 import UpdatePassword from "@/views/forms/UpdatePassword.vue";
+import UserForms from "@/views/forms/UserForms.vue";
 import PersonForms from "@/views/forms/PersonForms.vue";
 import CategoryForms from "@/views/forms/CategoryForms.vue";
 import ProductForms from "@/views/forms/ProductForms.vue";
+import SaleForms from "@/views/forms/SaleForms.vue";
 import BoxForms from "@/views/forms/BoxForms.vue";
 import OperationTypeForms from "@/views/forms/OperationTypeForms.vue";
 import OperationForms from "@/views/forms/OperationForms.vue";
@@ -48,6 +51,19 @@ const router = createRouter({
         {
           path: "updatePassword",
           component: UpdatePassword,
+        },
+        // Usuario
+        {
+          path: "/user",
+          component: User,
+        },
+        {
+          path: "/newUser",
+          component: UserForms,
+        },
+        {
+          path: "/updateUser",
+          component: UserForms,
         },
         // Clientes
         {
@@ -92,7 +108,15 @@ const router = createRouter({
           path: "/sale",
           component: Sale,
         },
-        // Operacion
+        {
+          path: "/newSale",
+          component: SaleForms,
+        },
+        {
+          path: "/updateSale",
+          component: SaleForms,
+        },
+        // Operación
 
         {
           path: "/box",

@@ -1,79 +1,3 @@
-<template>
-  <Forms
-    title="Información de producto"
-    icon="fa-list-alt"
-    @handleSubmit="handleSubmit"
-  >
-    <h6
-      class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
-    >
-      Datos del producto
-    </h6>
-    <div class="flex flex-wrap">
-      <div class="w-full lg:w-6/12 px-4">
-        <Input
-          id="name"
-          labelText="Nombre"
-          v-model="v$.name.$model"
-          :errors="v$.name.$errors"
-          type="text"
-        />
-      </div>
-      <div class="w-full lg:w-6/12 px-4">
-        <Input
-          id="description"
-          labelText="Descripción"
-          v-model="v$.description.$model"
-          :errors="v$.description.$errors"
-          type="text"
-        />
-      </div>
-      <div class="w-full lg:w-6/12 px-4">
-        <Input
-          id="price"
-          labelText="Precio"
-          v-model="v$.price.$model"
-          :errors="v$.price.$errors"
-          type="number"
-        />
-      </div>
-      <div class="w-full lg:w-6/12 px-4">
-        <Input
-          id="stock"
-          labelText="Cantidad"
-          v-model="v$.stock.$model"
-          :errors="v$.stock.$errors"
-          type="number"
-        />
-      </div>
-      <div class="w-full lg:w-full px-4">
-        <Input
-          id="image"
-          labelText="Imagen"
-          v-model="v$.image.$model"
-          :errors="v$.image.$errors"
-          type="url"
-        />
-      </div>
-      <div class="w-full lg:w-6/12 px-4">
-        <Select
-          id="category_id"
-          labelText="Categoría"
-          v-model="v$.category_id.$model"
-          :errors="v$.category_id.$errors"
-          :options="categories"
-        />
-      </div>
-      <div class="w-full lg:w-6/12 px-4">
-        <Checkbox
-          id="status"
-          labelText="Disponible"
-          v-model="v$.status.$model"
-        />
-      </div>
-    </div>
-  </Forms>
-</template>
 <script setup>
 import {
   createProductRequest,
@@ -174,3 +98,80 @@ onMounted(async () => {
   }
 });
 </script>
+
+<template>
+  <Forms
+    title="Información de producto"
+    icon="fa-list-alt"
+    @handleSubmit="handleSubmit"
+  >
+    <h6
+      class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
+    >
+      Datos del producto
+    </h6>
+    <div class="flex flex-wrap">
+      <div class="w-full lg:w-6/12 px-4">
+        <Input
+          id="name"
+          labelText="Nombre"
+          v-model="v$.name.$model"
+          :errors="v$.name.$errors"
+          type="text"
+        />
+      </div>
+      <div class="w-full lg:w-6/12 px-4">
+        <Input
+          id="description"
+          labelText="Descripción"
+          v-model="v$.description.$model"
+          :errors="v$.description.$errors"
+          type="text"
+        />
+      </div>
+      <div class="w-full lg:w-6/12 px-4">
+        <Input
+          id="price"
+          labelText="Precio"
+          v-model="v$.price.$model"
+          :errors="v$.price.$errors"
+          type="number"
+        />
+      </div>
+      <div class="w-full lg:w-6/12 px-4">
+        <Input
+          id="stock"
+          labelText="Cantidad"
+          v-model="v$.stock.$model"
+          :errors="v$.stock.$errors"
+          type="number"
+        />
+      </div>
+      <div class="w-full lg:w-full px-4">
+        <Input
+          id="image"
+          labelText="Imagen"
+          v-model="v$.image.$model"
+          :errors="v$.image.$errors"
+          type="url"
+        />
+      </div>
+      <div class="w-full lg:w-6/12 px-4">
+        <Select
+          id="category_id"
+          labelText="Categoría"
+          v-model="v$.category_id.$model"
+          :errors="v$.category_id.$errors"
+          :options="categories"
+        />
+      </div>
+      <div class="w-full lg:w-6/12 px-4">
+        <Checkbox
+          id="status"
+          labelText="Disponible"
+          v-model="v$.status.$model"
+        />
+      </div>
+    </div>
+  </Forms>
+</template>

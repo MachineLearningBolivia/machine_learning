@@ -1,21 +1,3 @@
-<template>
-  <card-data title="Productos" icon="fa-cubes">
-    <template v-slot:filters>
-      <div class="pb-4">
-        <Search v-model="searchQuery" />
-      </div>
-      <button-add to="/newProduct"> Agregar Producto </button-add>
-    </template>
-    <data-table
-      :items="itemsDisplay"
-      :columns="columns"
-      :options="options"
-      :modelValue="itemsDisplay"
-      @action="action"
-    >
-    </data-table>
-  </card-data>
-</template>
 <script setup>
 import { getProductsRequest } from "@/api/product";
 import { ref, onMounted, watch } from "vue";
@@ -38,10 +20,6 @@ const columns = ref([
   { key: "price", label: "Precio" },
   { key: "stock", label: "Cantidad" },
   { key: "image", label: "Imagen", image: true },
-  //{ key: "status", label: "Estado" },
-  //{ key: "category", label: "Categoria" },
-  //{ key: "created", label: "Creado" },
-  //{ key: "updated", label: "Subido" },
 ]);
 const options = ref([{ id: "update", name: "Actualizar", icon: "fa-plus" }]);
 
@@ -61,7 +39,6 @@ watch(searchQuery, () => {
 });
 
 function searchItems() {
-  console.log(itemsDisplay.value);
   const filteredItems = items.value.data.filter(
     (item) =>
       item.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
@@ -80,3 +57,21 @@ onMounted(() => {
   loadData();
 });
 </script>
+
+<template>
+  <card-data title="Productos" icon="fa-cubes">
+    <template v-slot:filters>
+      <div class="pb-4">
+        <Search v-model="searchQuery" />
+      </div>
+      <button-add to="/newProduct"> Agregar Producto </button-add>
+    </template>
+    <DataTable
+      :items="itemsDisplay"
+      :columns="columns"
+      :options="options"
+      :modelValue="itemsDisplay"
+      @action="action"
+    />
+  </card-data>
+</template>

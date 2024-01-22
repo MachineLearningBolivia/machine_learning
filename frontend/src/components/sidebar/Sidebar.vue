@@ -25,6 +25,9 @@ const utilsStore = useUtilsStore();
           <Anchor to="/people" icon="fa-users" name="Clientes" />
         </li>
         <li>
+          <Anchor to="/user" icon="fa-users" name="Usuarios" />
+        </li>
+        <li>
           <Anchor to="/sale" icon="fa-chart-bar" name="Ventas" />
         </li>
         <li>

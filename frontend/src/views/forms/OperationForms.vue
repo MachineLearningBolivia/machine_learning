@@ -4,6 +4,7 @@ import {
   getOperationRequest,
   updateOperationRequest,
 } from "@/api/operation";
+import { getUsersRequest } from "@/api/user";
 import { getBoxesRequest } from "@/api/box";
 import { getOperationTypesRequest } from "@/api/operationType";
 import { createSlug } from "@/utils/index";
@@ -82,6 +83,12 @@ async function handleSubmit() {
 
 onMounted(async () => {
   try {
+    const res = await getUsersRequest();
+    users.value = res.data.data;
+  } catch (error) {
+    toast.error("Error al cargar categorías");
+  }
+  try {
     const res = await getBoxesRequest();
     boxes.value = res.data.data;
   } catch (error) {
@@ -138,6 +145,15 @@ onMounted(async () => {
       </div>
       <div class="w-full lg:w-6/12 px-4">
         <Select
+          id="user"
+          labelText="Usuario"
+          v-model="v$.user.$model"
+          :errors="v$.user.$errors"
+          :options="users"
+        />
+      </div>
+      <div class="w-full lg:w-6/12 px-4">
+        <Select
           id="box_id"
           labelText="Caja"
           v-model="v$.box_id.$model"
@@ -152,7 +168,14 @@ onMounted(async () => {
           v-model="v$.operation_type_id.$model"
           :errors="v$.operation_type_id.$errors"
           :options="operationTypes"
-          name="name"
+        />
+      </div>
+      <div class="w-full lg:w-6/12 px-4">
+        <Checkbox
+          id="check"
+          labelText="Check"
+          v-model="v$.check.$model"
+          :errors="v$.check.$errors"
         />
       </div>
     </div>

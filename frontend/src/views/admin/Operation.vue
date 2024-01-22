@@ -21,7 +21,7 @@ const columns = ref([
   { key: "box_id", label: "ID Caja" },
   { key: "operation_type_id", label: "ID Tipo de operación" },
   { key: "check", label: "Check" },
-  { key: "created_at", label: "Fecha de operación" },
+  { key: "created_at", label: "Fecha de operación", date: true },
 ]);
 const options = ref([{ id: "update", name: "Actualizar", icon: "fa-plus" }]);
 
@@ -69,13 +69,12 @@ onMounted(() => {
       </div>
       <button-add to="/newOperation"> Agregar Operación </button-add>
     </template>
-    <data-table
+    <DataTable
       :items="itemsDisplay"
       :columns="columns"
       :options="options"
       :modelValue="itemsDisplay"
       @action="action"
-    >
-    </data-table>
+    />
   </card-data>
 </template>
