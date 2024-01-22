@@ -80,17 +80,17 @@ import {
   getProductRequest,
   updateProductRequest,
 } from "@/api/product";
-import { getCategories } from "@/api/category.js";
+import { getCategoriesRequest } from "@/api/category.js";
 import { createSlug } from "@/utils/index";
 import { useRoute, useRouter } from "vue-router";
 import { reactive, ref, onMounted } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, required } from "@vuelidate/validators";
 import { toast } from "vue-sonner";
-import Forms from "@/components/Cards/Forms.vue";
-import Input from "@/components/Inputs/Input.vue";
-import Select from "@/components/Inputs/Select.vue";
-import Checkbox from "@/components/Inputs/Checkbox.vue";
+import Forms from "@/components/cards/Forms.vue";
+import Input from "@/components/inputs/Input.vue";
+import Select from "@/components/inputs/Select.vue";
+import Checkbox from "@/components/inputs/Checkbox.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -158,7 +158,7 @@ async function handleSubmit() {
 
 onMounted(async () => {
   try {
-    const res = await getCategories();
+    const res = await getCategoriesRequest();
     categories.value = res.data.data;
   } catch (error) {
     toast.error("Error al cargar categorías");

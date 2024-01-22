@@ -6,7 +6,7 @@ import Auth from "@/templates/Auth.vue";
 
 // views for admin layout
 import Dashboard from "@/views/admin/Dashboard.vue";
-import People from "@/views/admin/People.vue";
+import Person from "@/views/admin/Person.vue";
 import Category from "@/views/admin/Category.vue";
 import Product from "@/views/admin/Product.vue";
 import Sale from "@/views/admin/Sale.vue";
@@ -52,7 +52,7 @@ const router = createRouter({
         // Clientes
         {
           path: "/people",
-          component: People,
+          component: Person,
         },
         {
           path: "/newPerson",

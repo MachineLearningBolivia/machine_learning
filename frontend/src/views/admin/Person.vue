@@ -1,5 +1,5 @@
 <script setup>
-import { getCategoriesRequest } from "@/api/category";
+import { getPeopleRequest } from "@/api/person";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -16,14 +16,15 @@ const load = ref(true);
 const columns = ref([
   { key: "id", label: "ID" },
   { key: "name", label: "Nombre" },
-  { key: "description", label: "Descripción" },
+  { key: "country", label: "País" },
+  { key: "city", label: "Ciudad" },
 ]);
 const options = ref([{ id: "update", name: "Actualizar", icon: "fa-plus" }]);
 
 async function loadData() {
   load.value = true;
   try {
-    const res = await getCategoriesRequest();
+    const res = await getPeopleRequest();
     items.value = res.data;
     itemsDisplay.value = items.value.data;
     load.value = false;
@@ -40,14 +41,15 @@ function searchItems() {
   const filteredItems = items.value.data.filter(
     (item) =>
       item.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchQuery.value.toLowerCase())
+      item.country.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      item.city.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
   itemsDisplay.value = filteredItems;
 }
 
 async function action(action) {
   if (action.action === "update") {
-    router.push({ path: "updateCategory", query: { id: action.id } });
+    router.push({ path: "updatePerson", query: { id: action.id } });
   }
 }
 
@@ -57,12 +59,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <card-data title="Categorías" icon="fa-list-alt">
+  <card-data title="Clientes" icon="fa-users">
     <template v-slot:filters>
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add to="/newCategory"> Agregar Categoría </button-add>
+      <button-add to="/newPerson"> Agregar Cliente </button-add>
     </template>
     <data-table
       :items="itemsDisplay"

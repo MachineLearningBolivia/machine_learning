@@ -19,7 +19,7 @@ const utilsStore = useUtilsStore();
     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
       <ul class="space-y-2 font-medium">
         <li>
-          <Anchor to="/dashboard" icon="fa-flipboard" name="Panel de control" />
+          <Anchor to="/dashboard" icon="fa-chart-pie" name="Panel de control" />
         </li>
         <li>
           <Anchor to="/people" icon="fa-users" name="Clientes" />
@@ -30,7 +30,7 @@ const utilsStore = useUtilsStore();
         <li>
           <AnchorAccordion name="Productos" icon="fa-shopping-cart">
             <li>
-              <Anchor to="/category" icon="fa-list-alt" name="Categorias" />
+              <Anchor to="/category" icon="fa-list-alt" name="Categorías" />
               <Anchor to="/product" icon="fa-cubes" name="Productos" />
             </li>
           </AnchorAccordion>
