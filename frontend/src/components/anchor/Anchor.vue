@@ -1,3 +1,20 @@
+<script setup>
+import { useUtilsStore } from "@/stores/utils";
+const utilsStore = useUtilsStore();
+const props = defineProps({
+  to: {
+    type: String,
+    default: "/",
+  },
+  icon: {
+    type: String,
+  },
+  name: {
+    type: String,
+  },
+});
+</script>
+
 <template>
   <router-link :to="to" v-slot="{ href, navigate, isActive }">
     <a
@@ -23,19 +40,3 @@
     </a>
   </router-link>
 </template>
-<script setup>
-import { useUtilsStore } from "@/stores/utils";
-const utilsStore = useUtilsStore();
-const props = defineProps({
-  to: {
-    type: String,
-    default: "/",
-  },
-  icon: {
-    type: String,
-  },
-  name: {
-    type: String,
-  },
-});
-</script>

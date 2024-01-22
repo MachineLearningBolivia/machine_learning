@@ -1,3 +1,13 @@
+<script setup>
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+function returnButton() {
+  router.go(-1);
+}
+</script>
+
 <template>
   <button
     type="button"
@@ -8,10 +18,3 @@
     Regresar
   </button>
 </template>
-<script setup>
-import { useRouter } from "vue-router";
-const router = useRouter();
-function returnButton() {
-  router.go(-1);
-}
-</script>

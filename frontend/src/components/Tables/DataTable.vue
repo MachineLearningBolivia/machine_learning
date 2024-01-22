@@ -1,3 +1,49 @@
+<script setup>
+import { ref, computed } from "vue";
+// import { fullDateFormat } from "@/utils/index";
+import TableDropdown from "@/components/Dropdown/TableDropdown.vue";
+import Dropdown from "@/components/Dropdown/Dropdown.vue";
+
+const emit = defineEmits(["action"]);
+
+const props = defineProps({
+  items: {
+    type: Array,
+    required: true,
+  },
+  columns: {
+    type: Array,
+    required: true,
+  },
+  options: {
+    type: Array,
+    required: true,
+  },
+  check: {
+    type: Boolean,
+    default: false,
+  },
+});
+const checkbox = ref(false);
+const currentPage = ref(1);
+const itemsPerPage = ref(5);
+const itemsDisplay = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  //console.log(itemsPerPage.value)
+  const end = start + itemsPerPage.value;
+  return props.items.slice(start, end);
+});
+
+const totalPages = computed(() => {
+  //console.log(props.items.length)
+  return Math.ceil(props.items.length / itemsPerPage.value);
+});
+
+function action(data) {
+  emit("action", data);
+}
+</script>
+
 <template>
   <div class="relative overflow-x-auto sm:rounded-lg m-4">
     <table class="w-full text-left text-gray-500 dark:text-gray-400">
@@ -157,49 +203,3 @@
     </nav>
   </div>
 </template>
-
-<script setup>
-import { ref, computed } from "vue";
-// import { fullDateFormat } from "@/utils/index";
-import TableDropdown from "@/components/Dropdown/TableDropdown.vue";
-import Dropdown from "@/components/Dropdown/Dropdown.vue";
-
-const emit = defineEmits(["action"]);
-
-const props = defineProps({
-  items: {
-    type: Array,
-    required: true,
-  },
-  columns: {
-    type: Array,
-    required: true,
-  },
-  options: {
-    type: Array,
-    required: true,
-  },
-  check: {
-    type: Boolean,
-    default: false,
-  },
-});
-const checkbox = ref(false);
-const currentPage = ref(1);
-const itemsPerPage = ref(5);
-const itemsDisplay = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value;
-  //console.log(itemsPerPage.value)
-  const end = start + itemsPerPage.value;
-  return props.items.slice(start, end);
-});
-
-const totalPages = computed(() => {
-  //console.log(props.items.length)
-  return Math.ceil(props.items.length / itemsPerPage.value);
-});
-
-function action(data) {
-  emit("action", data);
-}
-</script>

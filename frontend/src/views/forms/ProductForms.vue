@@ -75,8 +75,13 @@
   </Forms>
 </template>
 <script setup>
-import { postProduct, getProduct } from "@/api/product.js";
+import {
+  createProductRequest,
+  getProductRequest,
+  updateProductRequest,
+} from "@/api/product";
 import { getCategories } from "@/api/category.js";
+import { createSlug } from "@/utils/index";
 import { useRoute, useRouter } from "vue-router";
 import { reactive, ref, onMounted } from "vue";
 import { useVuelidate } from "@vuelidate/core";
@@ -126,15 +131,20 @@ const rules = {
 const v$ = useVuelidate(rules, formData);
 const errors = ref([]);
 
-async function handleSubmit(event) {
+async function handleSubmit() {
   const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect) {
     try {
       if (!route.query.id) {
         formData.slug = createSlug(formData.name);
-        await postProduct(formData);
+        await createProductRequest({
+          json: JSON.stringify(formData),
+        });
         toast.success("Producto guardada correctamente");
       } else {
+        await updateProductRequest(route.query.id, {
+          json: JSON.stringify(formData),
+        });
         toast.success("Producto actualizada correctamente");
       }
       router.push("/product");
@@ -146,12 +156,6 @@ async function handleSubmit(event) {
   }
 }
 
-function createSlug(text) {
-  let spaces = text.replace(/\s+/g, "-");
-  let accents = spaces.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  return accents.toLowerCase();
-}
-
 onMounted(async () => {
   try {
     const res = await getCategories();
@@ -161,7 +165,7 @@ onMounted(async () => {
   }
   if (route.query.id) {
     try {
-      const res = await getProduct(route.query.id);
+      const res = await getProductRequest(route.query.id);
       Object.assign(formData, res.data.product);
     } catch (error) {
       toast.error("Error al cargar datos");

@@ -1,3 +1,12 @@
+<script setup>
+const props = defineProps({
+  modelValue: {
+    type: String,
+    required: true,
+  },
+});
+</script>
+
 <template>
   <label for="table-search" class="sr-only">Search</label>
   <div class="relative mt-1">
@@ -19,11 +28,3 @@
     />
   </div>
 </template>
-<script setup>
-const props = defineProps({
-  modelValue: {
-    type: String,
-    required: true,
-  },
-});
-</script>

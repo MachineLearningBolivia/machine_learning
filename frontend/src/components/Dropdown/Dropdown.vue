@@ -1,3 +1,7 @@
+<script setup>
+import Popper from "vue3-popper";
+</script>
+
 <template>
   <Popper arrow>
     <slot name="icon"></slot>
@@ -8,7 +12,3 @@
     </template>
   </Popper>
 </template>
-
-<script setup>
-import Popper from "vue3-popper";
-</script>

@@ -1,13 +1,64 @@
+<script setup>
+import { useProfileStore } from "@/stores/profile";
+import { reactive, computed, ref } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { required, email, minLength, helpers } from "@vuelidate/validators";
+
+const profileStore = useProfileStore();
+const errors = ref([]);
+const alertOpen = ref();
+const formData = reactive({
+  email: "",
+  password: "",
+});
+const rules = computed(() => ({
+  email: {
+    email: helpers.withMessage("El email no es válido", email),
+    required: helpers.withMessage("El email es requerido", required),
+  },
+  password: {
+    required: helpers.withMessage("La contraseña es requerida", required),
+    minLength: helpers.withMessage(
+      "La contraseña debe tener al menos 6 caracteres",
+      minLength(6)
+    ),
+  },
+}));
+const v$ = useVuelidate(rules, formData);
+
+async function handleSubmit(event) {
+  event.preventDefault();
+  const isFormCorrect = await v$.value.$validate();
+  if (isFormCorrect) {
+    try {
+      await profileStore.login(formData);
+      location.reload();
+    } catch (error) {
+      errors.value = error.response.data.errors;
+      notification();
+    }
+  }
+}
+
+function notification() {
+  alertOpen.value = true;
+  const timer = setTimeout(() => {
+    alertOpen.value = false;
+  }, 3000);
+  return () => clearTimeout(timer);
+}
+</script>
+
 <template>
   <div class="container mx-auto px-4 h-full">
     <div class="flex content-center items-center justify-center h-full">
       <div class="w-full lg:w-4/12 px-4">
         <div
-          class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-white bg-opacity-20 backdrop-blur-md border-0"
+          class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-700 border-0"
         >
           <div class="rounded-t mb-0 px-6 py-6">
             <div class="text-center mb-3">
-              <h6 class="text-white text-xl font-bold">Inicio</h6>
+              <h6 class="text-white text-2xl font-bold">Inicio</h6>
             </div>
             <hr class="mt-6 border-b-1 border-gray-300" />
           </div>
@@ -68,7 +119,7 @@
 
               <div class="text-center mt-6">
                 <button
-                  class="bg-gray-800 text-white active:bg-gray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                  class="bg-gray-800 text-white active:bg-gray-600 hover:bg-gray-900 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                   type="submit"
                 >
                   Ingresar
@@ -81,55 +132,3 @@
     </div>
   </div>
 </template>
-<script setup>
-import { reactive, computed, ref } from "vue";
-import { useVuelidate } from "@vuelidate/core";
-import { required, email, minLength, helpers } from "@vuelidate/validators";
-import { useProfileStore } from "@/stores/profile";
-
-const profileStore = useProfileStore();
-
-const errors = ref([]);
-const alertOpen = ref();
-const formData = reactive({
-  email: "",
-  password: "",
-});
-
-const rules = computed(() => ({
-  email: {
-    email: helpers.withMessage("El email no es válido", email),
-    required: helpers.withMessage("El email es requerido", required),
-  },
-  password: {
-    required: helpers.withMessage("La contraseña es requerida", required),
-    minLength: helpers.withMessage(
-      "La contraseña debe tener al menos 6 caracteres",
-      minLength(6)
-    ),
-  },
-}));
-
-const v$ = useVuelidate(rules, formData);
-
-async function handleSubmit(event) {
-  event.preventDefault();
-  const isFormCorrect = await v$.value.$validate();
-  if (isFormCorrect) {
-    try {
-      await profileStore.login(formData);
-      location.reload();
-    } catch (error) {
-      errors.value = error.response.data.errors;
-      notification();
-    }
-  }
-}
-function notification() {
-  alertOpen.value = true;
-  const timer = setTimeout(() => {
-    alertOpen.value = false;
-  }, 3000);
-  return () => clearTimeout(timer);
-}
-</script>

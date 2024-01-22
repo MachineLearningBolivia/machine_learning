@@ -1,3 +1,18 @@
+<script setup>
+import { useProfileStore } from "@/stores/profile";
+import { useDark, useToggle } from "@vueuse/core";
+import Dropdown from "@/components/Dropdown/Dropdown.vue";
+
+const profileStore = useProfileStore();
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
+
+async function logout() {
+  await profileStore.logout();
+  location.reload();
+}
+</script>
+
 <template>
   <div class="flex items-center">
     <div class="flex items-center ml-3">
@@ -69,18 +84,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { useDark, useToggle } from "@vueuse/core";
-import Dropdown from "@/components/Dropdown/Dropdown.vue";
-import { useProfileStore } from "@/stores/profile";
-
-const profileStore = useProfileStore();
-const isDark = useDark();
-const toggleDark = useToggle(isDark);
-
-async function logout() {
-  await profileStore.logout();
-  location.reload();
-}
-</script>

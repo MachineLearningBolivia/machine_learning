@@ -1,53 +1,77 @@
-<template>
-  <card-data title="Cajas" icon="fa-box">
-    <template v-slot:filters>
-      <div class="pb-4">
-        <Search />
-      </div>
-      <button-add to="/newBox"> Agregar Caja </button-add>
-    </template>
-    <data-table :items="itemsDisplay" :columns="columnas" :options=1 :modelValue="itemsDisplay">
-    </data-table>
-  </card-data>
-</template>
 <script setup>
+import { getBoxesRequest } from "@/api/box.js";
+import { ref, onMounted, watch } from "vue";
+import { useRouter } from "vue-router";
+import { toast } from "vue-sonner";
 import CardData from "@/components/Cards/CardData.vue";
 import Search from "@/components/Inputs/Search.vue";
 import DataTable from "@/components/Tables/DataTable.vue";
 import ButtonAdd from "@/components/button/ButtonAdd.vue";
 
-import { getBox } from "@/api/box.js"
-import { ref, onMounted } from "vue";
-
+const router = useRouter();
 const items = ref([]);
-const load = ref(true);
 const itemsDisplay = ref([]);
-
-const columnas = ref([
+const searchQuery = ref("");
+const load = ref(true);
+const columns = ref([
+  { key: "id", label: "ID" },
   { key: "name", label: "Nombre" },
   { key: "description", label: "Descripción" },
 ]);
+const options = ref([{ id: "update", name: "Actualizar", icon: "fa-plus" }]);
 
 async function loadData() {
   load.value = true;
   try {
-    const res = await getBox();
+    const res = await getBoxesRequest();
     items.value = res.data;
-    console.log(res)
     itemsDisplay.value = items.value.data;
     load.value = false;
-    //console.log(items.value);
-    //console.log(items.value.data[3]);
-    //console.log(itemsDisplay.value[0]);
-    //console.log(items.value[0]);
   } catch (error) {
     toast.error("Error al cargar datos");
   }
 }
 
+watch(searchQuery, () => {
+  searchItems();
+});
+
+function searchItems() {
+  console.log(itemsDisplay.value);
+  const filteredItems = items.value.data.filter(
+    (item) =>
+      item.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+  itemsDisplay.value = filteredItems;
+}
+
+async function action(action) {
+  if (action.action === "update") {
+    router.push({ path: "updateBox", query: { id: action.id } });
+  }
+}
 
 onMounted(() => {
   loadData();
 });
-
 </script>
+
+<template>
+  <card-data title="Cajas" icon="fa-box">
+    <template v-slot:filters>
+      <div class="pb-4">
+        <Search v-model="searchQuery" />
+      </div>
+      <button-add to="/newBox"> Agregar Caja </button-add>
+    </template>
+    <data-table
+      :items="itemsDisplay"
+      :columns="columns"
+      :options="options"
+      :modelValue="itemsDisplay"
+      @action="action"
+    >
+    </data-table>
+  </card-data>
+</template>

@@ -1,3 +1,25 @@
+<script setup>
+defineEmits(["update:modelValue"]);
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+  labelText: {
+    type: String,
+    required: true,
+  },
+  modelValue: {
+    type: Boolean,
+    default: false,
+  },
+  errors: {
+    type: Array,
+    default: () => [],
+  },
+});
+</script>
+
 <template>
   <div class="relative w-full mb-3">
     <div class="p-1 mb-1" v-for="(error, index) of errors" :key="index">
@@ -23,25 +45,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-defineEmits(["update:modelValue"]);
-const props = defineProps({
-  id: {
-    type: String,
-    required: true,
-  },
-  labelText: {
-    type: String,
-    required: true,
-  },
-  modelValue: {
-    type: Boolean,
-    default: false,
-  },
-  errors: {
-    type: Array,
-    default: () => [],
-  },
-});
-</script>
