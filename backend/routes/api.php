@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ClientsProductsController;
+use App\Http\Controllers\ProductsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,4 +38,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 });
 
-Route::get('client/products', [ClientsProductsController::class, 'index']);
+Route::get('client/products', [ProductsController::class, 'index']);
