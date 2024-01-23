@@ -1,3 +1,11 @@
+<script setup>
+import { useUtilsStore } from "@/stores/utils";
+
+import Avatar from "@/components/avatar/Avatar.vue";
+
+const utilsStore = useUtilsStore();
+</script>
+
 <template>
   <nav
     class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"
@@ -37,10 +45,3 @@
     </div>
   </nav>
 </template>
-<script setup>
-import { useUtilsStore } from "@/stores/utils";
-
-import Avatar from "@/components/avatar/Avatar.vue";
-
-const utilsStore = useUtilsStore();
-</script>

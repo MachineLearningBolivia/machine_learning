@@ -3,16 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory;
-    use HasApiTokens;
-
+    use HasFactory, Notifiable, HasApiTokens;
     protected $fillable = [
         'name',
         'surname',
@@ -24,18 +21,18 @@ class User extends Authenticatable
         'status',
     ];
 
-/*     protected $hidden = [
+    protected $hidden = [
         'password',
         'remember_token',
-    ]; */
+    ];
 
-/*     protected $casts = [
+    protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-    ]; */
+    ];
 
     public function operations()
     {
-        return $this->hasMany(Operations::class);
+        return $this->hasMany(Operation::class);
     }
 }

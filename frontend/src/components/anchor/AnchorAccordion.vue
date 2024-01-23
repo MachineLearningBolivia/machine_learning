@@ -1,3 +1,16 @@
+<script setup>
+import { ref } from "vue";
+const props = defineProps({
+  icon: {
+    type: String,
+  },
+  name: {
+    type: String,
+  },
+});
+const show = ref(false);
+</script>
+
 <template>
   <button
     type="button"
@@ -21,18 +34,7 @@
     </ul>
   </transition>
 </template>
-<script setup>
-import { ref } from "vue";
-const props = defineProps({
-  icon: {
-    type: String,
-  },
-  name: {
-    type: String,
-  },
-});
-const show = ref(false);
-</script>
+
 <style>
 .ul-enter-active {
   transition: all 0.3s ease-out;

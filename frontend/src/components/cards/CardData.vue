@@ -1,3 +1,16 @@
+<script setup>
+const props = defineProps({
+  title: {
+    type: String,
+    default: "Titulo",
+  },
+  icon: {
+    type: String,
+    default: "fa-home",
+  },
+});
+</script>
+
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
@@ -22,16 +35,3 @@
     </div>
   </div>
 </template>
-<script setup>
-// import { ref } from "vue";
-const props = defineProps({
-  title: {
-    type: String,
-    default: "Titulo",
-  },
-  icon: {
-    type: String,
-    default: "fa-home",
-  },
-});
-</script>

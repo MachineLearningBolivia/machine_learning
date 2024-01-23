@@ -1,3 +1,29 @@
+<script setup>
+import ButtonReturn from "@/components/button/ButtonReturn.vue";
+import ButtonSave from "@/components/button/ButtonSave.vue";
+
+const props = defineProps({
+  title: {
+    type: String,
+    default: "",
+  },
+  description: {
+    type: String,
+    default: "",
+  },
+  icon: {
+    type: String,
+    default: "",
+  },
+});
+const emit = defineEmits(["handleSubmit"]);
+
+function handleSubmit(e) {
+  if (e) e.preventDefault();
+  emit("handleSubmit");
+}
+</script>
+
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-4 px-4">
@@ -32,29 +58,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import ButtonReturn from "@/components/button/ButtonReturn.vue";
-import ButtonSave from "@/components/button/ButtonSave.vue";
-
-const props = defineProps({
-  title: {
-    type: String,
-    default: "",
-  },
-  description: {
-    type: String,
-    default: "",
-  },
-  icon: {
-    type: String,
-    default: "",
-  },
-});
-const emit = defineEmits(["save"]);
-
-function handleSubmit(e) {
-  if (e) e.preventDefault();
-  emit("handleSubmit");
-}
-</script>

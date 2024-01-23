@@ -1,12 +1,12 @@
 <script setup>
-import { getBoxesRequest } from "@/api/box.js";
+import { getPeopleRequest } from "@/api/person";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
 import CardData from "@/components/Cards/CardData.vue";
 import Search from "@/components/Inputs/Search.vue";
-import DataTable from "@/components/Tables/DataTable.vue";
 import ButtonAdd from "@/components/button/ButtonAdd.vue";
+import DataTable from "@/components/Tables/DataTable.vue";
 
 const router = useRouter();
 const items = ref([]);
@@ -16,14 +16,15 @@ const load = ref(true);
 const columns = ref([
   { key: "id", label: "ID" },
   { key: "name", label: "Nombre" },
-  { key: "description", label: "Descripción" },
+  { key: "country", label: "País" },
+  { key: "city", label: "Ciudad" },
 ]);
 const options = ref([{ id: "update", name: "Actualizar", icon: "fa-plus" }]);
 
 async function loadData() {
   load.value = true;
   try {
-    const res = await getBoxesRequest();
+    const res = await getPeopleRequest();
     items.value = res.data;
     itemsDisplay.value = items.value.data;
     load.value = false;
@@ -37,18 +38,18 @@ watch(searchQuery, () => {
 });
 
 function searchItems() {
-  console.log(itemsDisplay.value);
   const filteredItems = items.value.data.filter(
     (item) =>
       item.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchQuery.value.toLowerCase())
+      item.country.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      item.city.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
   itemsDisplay.value = filteredItems;
 }
 
 async function action(action) {
   if (action.action === "update") {
-    router.push({ path: "updateBox", query: { id: action.id } });
+    router.push({ path: "updatePerson", query: { id: action.id } });
   }
 }
 
@@ -58,12 +59,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <card-data title="Cajas" icon="fa-box">
+  <card-data title="Clientes" icon="fa-users">
     <template v-slot:filters>
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add to="/newBox"> Agregar Caja </button-add>
+      <button-add to="/newPerson"> Agregar Cliente </button-add>
     </template>
     <DataTable
       :items="itemsDisplay"

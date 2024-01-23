@@ -1,11 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useProfileStore } from "@/stores/profile";
 
 import Admin from "@/templates/Layout.vue";
 import Auth from "@/templates/Auth.vue";
 
 // views for admin layout
 import Dashboard from "@/views/admin/Dashboard.vue";
-import People from "@/views/admin/People.vue";
+import User from "@/views/admin/User.vue";
+import Person from "@/views/admin/Person.vue";
 import Category from "@/views/admin/Category.vue";
 import Product from "@/views/admin/Product.vue";
 import Sale from "@/views/admin/Sale.vue";
@@ -16,9 +18,11 @@ import Operation from "@/views/admin/Operation.vue";
 // Forms
 import Profile from "@/views/forms/ProfileForms.vue";
 import UpdatePassword from "@/views/forms/UpdatePassword.vue";
+import UserForms from "@/views/forms/UserForms.vue";
 import PersonForms from "@/views/forms/PersonForms.vue";
 import CategoryForms from "@/views/forms/CategoryForms.vue";
 import ProductForms from "@/views/forms/ProductForms.vue";
+import SaleForms from "@/views/forms/SaleForms.vue";
 import BoxForms from "@/views/forms/BoxForms.vue";
 import OperationTypeForms from "@/views/forms/OperationTypeForms.vue";
 import OperationForms from "@/views/forms/OperationForms.vue";
@@ -48,10 +52,23 @@ const router = createRouter({
           path: "updatePassword",
           component: UpdatePassword,
         },
+        // Usuario
+        {
+          path: "/user",
+          component: User,
+        },
+        {
+          path: "/newUser",
+          component: UserForms,
+        },
+        {
+          path: "/updateUser",
+          component: UserForms,
+        },
         // Clientes
         {
           path: "/people",
-          component: People,
+          component: Person,
         },
         {
           path: "/newPerson",
@@ -91,7 +108,15 @@ const router = createRouter({
           path: "/sale",
           component: Sale,
         },
-        // Operacion
+        {
+          path: "/newSale",
+          component: SaleForms,
+        },
+        {
+          path: "/updateSale",
+          component: SaleForms,
+        },
+        // Operación
 
         {
           path: "/box",
@@ -147,17 +172,62 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    // acceso a admin
-    const isAuthenticated = true;
-    if (!isAuthenticated) {
-      next("/auth/login");
-    } else {
-      next();
+router.beforeEach(async (to, from, next) => {
+  // if (to.matched.some((record) => record.meta.requiresAuth)) {
+  //   // acceso a admin
+  //   const isAuthenticated = true;
+  //   if (!isAuthenticated) {
+  //     next("/auth/login");
+  //   } else {
+  //     next();
+  //   }
+  // } else {
+  //   next();
+  // }
+
+  let ok = false;
+  let path = "";
+  const profileStore = useProfileStore();
+
+  if (!profileStore.isAuthenticated) {
+    try {
+      await profileStore.verifyToken();
+    } catch (error) {
+      console.error("Error loading user data:", error);
     }
-  } else {
+  }
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!profileStore.isAuthenticated) {
+      path = "/auth/login";
+      ok = false;
+    } else {
+      ok = true;
+    }
+  }
+
+  if (to.matched.some((record) => record.meta.notAuthenticated)) {
+    if (profileStore.isAuthenticated) {
+      ok = false;
+      path = "/";
+    } else {
+      ok = true;
+    }
+  }
+
+  // if (to.matched.some((record) => record.meta.requiresAdmin)) {
+  //   if (!profileStore.isAdmin) {
+  //     ok = false;
+  //     path = "/";
+  //   } else {
+  //     ok = true;
+  //   }
+  // }
+
+  if (ok) {
     next();
+  } else {
+    next({ path });
   }
 });
 

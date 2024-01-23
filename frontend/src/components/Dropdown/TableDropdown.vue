@@ -1,3 +1,32 @@
+<script setup>
+import { createPopper } from "@popperjs/core";
+
+const props = defineProps({
+  options: {
+    default: [],
+  },
+  id: {
+    default: "",
+  },
+});
+let dropdownPopoverShow = false;
+
+function toggleDropdown(event) {
+  event.preventDefault();
+  dropdownPopoverShow = !dropdownPopoverShow;
+  if (dropdownPopoverShow) {
+    createPopper(this.$refs.btnDropdownRef, this.$refs.popoverDropdownRef, {
+      placement: "bottom-start",
+    });
+  }
+}
+
+function emit(action) {
+  dropdownPopoverShow = false;
+  this.$emit("emit", action);
+}
+</script>
+
 <template>
   <div>
     <a
@@ -35,32 +64,3 @@
     </div>
   </div>
 </template>
-<script setup>
-import { createPopper } from "@popperjs/core";
-
-const props = defineProps({
-  options: {
-    default: [],
-  },
-  id: {
-    default: "",
-  },
-});
-
-let dropdownPopoverShow = false;
-
-function toggleDropdown(event) {
-  event.preventDefault();
-  dropdownPopoverShow = !dropdownPopoverShow;
-  if (dropdownPopoverShow) {
-    createPopper(this.$refs.btnDropdownRef, this.$refs.popoverDropdownRef, {
-      placement: "bottom-start",
-    });
-  }
-}
-
-function emit(action) {
-  dropdownPopoverShow = false;
-  this.$emit("emit", action);
-}
-</script>

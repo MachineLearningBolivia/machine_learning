@@ -1,3 +1,104 @@
+<script setup>
+import {
+  createProductRequest,
+  getProductRequest,
+  updateProductRequest,
+} from "@/api/product";
+import { getCategoriesRequest } from "@/api/category.js";
+import { createSlug } from "@/utils/index";
+import { useRoute, useRouter } from "vue-router";
+import { reactive, ref, onMounted } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { helpers, required } from "@vuelidate/validators";
+import { toast } from "vue-sonner";
+import Forms from "@/components/cards/Forms.vue";
+import Input from "@/components/inputs/Input.vue";
+import Select from "@/components/inputs/Select.vue";
+import Checkbox from "@/components/inputs/Checkbox.vue";
+
+const route = useRoute();
+const router = useRouter();
+const categories = ref([]);
+const formData = reactive({
+  name: "",
+  description: "",
+  price: "",
+  stock: "",
+  image: "",
+  status: false,
+  category_id: "",
+});
+const rules = {
+  name: {
+    required: helpers.withMessage("Se requiere el nombre", required),
+  },
+  description: {
+    required: helpers.withMessage("Se requiere la descripción", required),
+  },
+  price: {
+    required: helpers.withMessage("Se requiere el precio", required),
+  },
+  stock: {
+    required: helpers.withMessage("Se requiere el stock", required),
+  },
+  image: {
+    required: helpers.withMessage("Se requiere una imagen", required),
+  },
+  status: {
+    required: helpers.withMessage("Se requiere el estado", required),
+  },
+  category_id: {
+    required: helpers.withMessage("Se requiere una categoría", required),
+  },
+  slug: {},
+};
+const v$ = useVuelidate(rules, formData);
+const errors = ref([]);
+
+async function handleSubmit() {
+  const isFormCorrect = await v$.value.$validate();
+  if (isFormCorrect) {
+    try {
+      if (!route.query.id) {
+        formData.slug = createSlug(formData.name);
+        await createProductRequest({
+          json: JSON.stringify(formData),
+        });
+        toast.success("Producto guardada correctamente");
+      } else {
+        await updateProductRequest(route.query.id, {
+          json: JSON.stringify(formData),
+        });
+        toast.success("Producto actualizada correctamente");
+      }
+      router.push("/product");
+    } catch (error) {
+      toast.error(
+        "Error al añadir la producto, por favor verifique que los datos estén correctos"
+      );
+    }
+  }
+}
+
+onMounted(async () => {
+  try {
+    const res = await getCategoriesRequest();
+    categories.value = res.data.data;
+  } catch (error) {
+    toast.error("Error al cargar categorías");
+  }
+  if (route.query.id) {
+    try {
+      const res = await getProductRequest(route.query.id);
+      Object.assign(formData, res.data.product);
+    } catch (error) {
+      toast.error("Error al cargar datos");
+      router.push("/product");
+    }
+  }
+});
+</script>
+
 <template>
   <Forms
     title="Información de producto"
@@ -11,114 +112,66 @@
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-6/12 px-4">
-        <Input id="name" labelText="Nombre" type="text" v-model="modelProduct.name" placeholder="Nombre del producto"/>
+        <Input
+          id="name"
+          labelText="Nombre"
+          v-model="v$.name.$model"
+          :errors="v$.name.$errors"
+          type="text"
+        />
       </div>
       <div class="w-full lg:w-6/12 px-4">
-        <Input id="slug" labelText="sluggg" type="text" v-model="modelProduct.slug" placeholder="slug del producto"/>
+        <Input
+          id="description"
+          labelText="Descripción"
+          v-model="v$.description.$model"
+          :errors="v$.description.$errors"
+          type="text"
+        />
       </div>
       <div class="w-full lg:w-6/12 px-4">
-        <Input id="description" labelText="Descripción" type="text" v-model="modelProduct.description" placeholder="Descripcion del producto"/>
+        <Input
+          id="price"
+          labelText="Precio"
+          v-model="v$.price.$model"
+          :errors="v$.price.$errors"
+          type="number"
+        />
       </div>
       <div class="w-full lg:w-6/12 px-4">
-        <Input id="price" labelText="Precio" type="number" v-model="modelProduct.price" placeholder="Precio del producto"/>
-      </div>
-      <div class="w-full lg:w-6/12 px-4">
-        <Input id="stock" labelText="Cantidad" type="number" v-model="modelProduct.stock" placeholder="Cantidad del producto"/>
+        <Input
+          id="stock"
+          labelText="Cantidad"
+          v-model="v$.stock.$model"
+          :errors="v$.stock.$errors"
+          type="number"
+        />
       </div>
       <div class="w-full lg:w-full px-4">
-        <Input id="image" v-model="modelProduct.image" labelText="Imagen" type="url" placeholder="Link de la imagen del producto"/>
-      </div>
-      <div class="w-full lg:w-6/12 px-4">
-        <Select 
-          id="category_id" 
-          labelText="Categoria" 
-          v-model="modelProduct.category_id"
-          :modelValue="selectedValue"
-          :errors="selectErrors"
-          :options="itemsDisplay"
-          name="name"
-          :disabled="isDisabled"
-          @update:modelValue="updateSelectedValue"
+        <Input
+          id="image"
+          labelText="Imagen"
+          v-model="v$.image.$model"
+          :errors="v$.image.$errors"
+          type="url"
         />
-          
       </div>
       <div class="w-full lg:w-6/12 px-4">
-        <Checkbox id="status" labelText="Disponible" v-model="modelProduct.status"/>
+        <Select
+          id="category_id"
+          labelText="Categoría"
+          v-model="v$.category_id.$model"
+          :errors="v$.category_id.$errors"
+          :options="categories"
+        />
+      </div>
+      <div class="w-full lg:w-6/12 px-4">
+        <Checkbox
+          id="status"
+          labelText="Disponible"
+          v-model="v$.status.$model"
+        />
       </div>
     </div>
   </Forms>
 </template>
-<script setup>
-import { toast } from "vue-sonner";
-import { ref, onMounted } from 'vue';
-import Forms from "@/components/Cards/Forms.vue";
-import Input from "@/components/Inputs/Input.vue";
-import Select from "@/components/Inputs/Select.vue";
-import Checkbox from "@/components/Inputs/Checkbox.vue";
-
-import { postProduct } from "../../../api/product.js";
-import { getCategory  } from "../../../api/category.js";
-
-const modelProduct = {
-   name: '',
-   description: '',
-   price: ``,
-   stock: ``,
-   slug: '',
-   image: '',
-   status: false,
-   category_id: 0
-};
-//Opciones para el campo selecte
-const isDisabled = false;
-const selectedValue = ''; 
-// opciones para get category
-const items = ref([]);
-const load = ref(true);
-const itemsDisplay = ref([]);
-async function generarSlug() {
-      // Función para generar el slug a partir del nombre del producto
-      console.log("holaaaaaaaa");
-      modelProduct.slug = modelProduct.value[0].name;
-      /*
-        .toLowerCase() // Convertir a minúsculas
-        .replace(/\s+/g, '-') // Reemplazar espacios con guiones
-        .replace(/[^a-z0-9-]/g, ''); // Quitar caracteres especiales
-        */
-      console.log(modelProduct.value[0].name);
-    }
-
-// funcion para el envio de post
-async function handleSubmit() {
-  try {
-const productData = {
-  name: 'Nombre del producto',
-  description: 'Descripción del producto',
-  price: 29.99,
-  stock: 100,
-  slug: 'slug-del-producto',
-  image: 'url-de-la-imagen.jpg',
-  status: true,
-  category_id: 1
-};
-    const res = await postProduct({ json: JSON.stringify(modelProduct) });
-    console.log(res);
-    alert(res.data.message);
-    // Limpia el formulario después de enviar los datos
-    modelProduct.value = {
-      name: '',
-      description: '',
-      price: '',
-      stock: '',
-      slug: '',
-      image: '',
-      status: '',
-      category_id: ''
-    };
-    toast.success("Información actualizada correctamente");
-  } catch (error) {
-    toast.error("Error al enviar el producto")
-  }
-}
-
-</script>
