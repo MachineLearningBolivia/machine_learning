@@ -93,6 +93,15 @@
               </div>
             </Dropdown>
           </td>
+
+          <td>
+              <button @click.stop="editItem(item)" class="text-blue-500 hover:underline">
+                Editar
+              </button>
+
+              <button-edit to="/newProduct"> Editar Producto </button-edit>
+          </td>
+
         </tr>
       </tbody>
     </table>
@@ -159,6 +168,8 @@ import { ref, computed } from "vue";
 // import { fullDateFormat } from "@/utils/index";
 import TableDropdown from "@/components/Dropdown/TableDropdown.vue";
 import Dropdown from "@/components/Dropdown/Dropdown.vue";
+
+import ButtonEdit from "@/components/button/ButtonEdit.vue";
 
 const emit = defineEmits(["action"]);
 
