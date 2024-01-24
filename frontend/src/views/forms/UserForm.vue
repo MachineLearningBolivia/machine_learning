@@ -63,7 +63,7 @@ async function handleSubmit() {
         });
         toast.success("Usuario actualizada correctamente");
       }
-      router.push("/user");
+      router.push("/users");
     } catch (error) {
       toast.error(
         "Error al añadir el usuario, por favor verifique que los datos estén correctos"
@@ -79,7 +79,7 @@ onMounted(async () => {
       Object.assign(formData, res.data.user);
     } catch (error) {
       toast.error("Error al cargar datos");
-      router.push("/user");
+      router.push("/users");
     }
   }
 });
@@ -88,7 +88,7 @@ onMounted(async () => {
 <template>
   <Forms
     title="Información del cliente"
-    icon="fa-user"
+    icon="fa-user-cog"
     @handleSubmit="handleSubmit"
   >
     <h6

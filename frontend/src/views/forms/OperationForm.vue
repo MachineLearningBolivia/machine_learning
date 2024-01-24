@@ -17,7 +17,6 @@ import Forms from "@/components/cards/Forms.vue";
 import Input from "@/components/inputs/Input.vue";
 import Select from "@/components/inputs/Select.vue";
 import Checkbox from "@/components/inputs/Checkbox.vue";
-import { getOperationTypeRequest } from "../../api/operationType";
 
 const route = useRoute();
 const router = useRouter();
@@ -72,7 +71,7 @@ async function handleSubmit() {
         });
         toast.success("Operación actualizada correctamente");
       }
-      router.push("/operation");
+      router.push("/operations");
     } catch (error) {
       toast.error(
         "Error al añadir la operación, por favor verifique que los datos estén correctos"
@@ -107,7 +106,7 @@ onMounted(async () => {
       Object.assign(formData, res.data.operation);
     } catch (error) {
       toast.error("Error al cargar datos");
-      router.push("/operation");
+      router.push("/operations");
     }
   }
 });
@@ -116,7 +115,7 @@ onMounted(async () => {
 <template>
   <Forms
     title="Información de la operación"
-    icon="fa-clipboard-list"
+    icon="fa-book"
     @handleSubmit="handleSubmit"
   >
     <h6

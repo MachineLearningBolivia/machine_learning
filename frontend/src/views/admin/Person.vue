@@ -49,7 +49,7 @@ function searchItems() {
 
 async function action(action) {
   if (action.action === "update") {
-    router.push({ path: "updatePerson", query: { id: action.id } });
+    router.push({ path: "/update/people", query: { id: action.id } });
   }
 }
 
@@ -59,12 +59,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <card-data title="Clientes" icon="fa-users">
+  <card-data title="Clientes" icon="fa-user-tie">
     <template v-slot:filters>
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add to="/newPerson"> Agregar Cliente </button-add>
+      <button-add to="/new/people"> Agregar Cliente </button-add>
     </template>
     <DataTable
       :items="itemsDisplay"

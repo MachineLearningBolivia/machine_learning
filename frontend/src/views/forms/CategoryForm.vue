@@ -1,5 +1,10 @@
 <script setup>
-import { createBoxRequest, getBoxRequest, updateBoxRequest } from "@/api/box";
+import {
+  createCategoryRequest,
+  getCategoryRequest,
+  updateCategoryRequest,
+} from "@/api/category";
+import { createSlug } from "@/utils/index";
 import { useRoute, useRouter } from "vue-router";
 import { reactive, ref, onMounted } from "vue";
 import { useVuelidate } from "@vuelidate/core";
@@ -21,6 +26,7 @@ const rules = {
   description: {
     required: helpers.withMessage("Se requiere la descripción", required),
   },
+  slug: {},
 };
 const v$ = useVuelidate(rules, formData);
 const errors = ref([]);
@@ -30,20 +36,21 @@ async function handleSubmit() {
   if (isFormCorrect) {
     try {
       if (!route.query.id) {
-        await createBoxRequest({
+        formData.slug = createSlug(formData.name);
+        await createCategoryRequest({
           json: JSON.stringify(formData),
         });
-        toast.success("Caja guardada correctamente");
+        toast.success("Categoría guardada correctamente");
       } else {
-        await updateBoxRequest(route.query.id, {
+        await updateCategoryRequest(route.query.id, {
           json: JSON.stringify(formData),
         });
-        toast.success("Caja actualizada correctamente");
+        toast.success("Categoría actualizada correctamente");
       }
-      router.push("/box");
+      router.push("/categories");
     } catch (error) {
       toast.error(
-        "Error al añadir la producto, por favor verifique que los datos estén correctos"
+        "Error al añadir la categoría, por favor verifique que los datos estén correctos"
       );
     }
   }
@@ -52,11 +59,11 @@ async function handleSubmit() {
 onMounted(async () => {
   if (route.query.id) {
     try {
-      const res = await getBoxRequest(route.query.id);
-      Object.assign(formData, res.data.box);
+      const res = await getCategoryRequest(route.query.id);
+      Object.assign(formData, res.data.category);
     } catch (error) {
       toast.error("Error al cargar datos");
-      router.push("/box");
+      router.push("/categories");
     }
   }
 });
@@ -64,14 +71,14 @@ onMounted(async () => {
 
 <template>
   <Forms
-    title="Información de la caja"
-    icon="fa-box"
+    title="Información de categoría"
+    icon="fa-layer-group"
     @handleSubmit="handleSubmit"
   >
     <h6
       class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
     >
-      Datos de la caja
+      Datos de la categoría
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-full px-4">

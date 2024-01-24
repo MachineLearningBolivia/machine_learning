@@ -1,5 +1,5 @@
 <script setup>
-import { getBoxesRequest } from "@/api/box.js";
+import { getBoxesRequest } from "@/api/box";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -48,7 +48,7 @@ function searchItems() {
 
 async function action(action) {
   if (action.action === "update") {
-    router.push({ path: "updateBox", query: { id: action.id } });
+    router.push({ path: "/update/boxes", query: { id: action.id } });
   }
 }
 
@@ -63,7 +63,7 @@ onMounted(() => {
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add to="/newBox"> Agregar Caja </button-add>
+      <button-add to="/new/boxes"> Agregar Caja </button-add>
     </template>
     <DataTable
       :items="itemsDisplay"

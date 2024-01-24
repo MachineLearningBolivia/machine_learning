@@ -1,10 +1,9 @@
 <script setup>
 import {
-  createCategoryRequest,
-  getCategoryRequest,
-  updateCategoryRequest,
-} from "@/api/category";
-import { createSlug } from "@/utils/index";
+  createConfigurationRequest,
+  getConfigurationRequest,
+  updateConfigurationRequest,
+} from "@/api/configuration";
 import { useRoute, useRouter } from "vue-router";
 import { reactive, ref, onMounted } from "vue";
 import { useVuelidate } from "@vuelidate/core";
@@ -17,16 +16,19 @@ const route = useRoute();
 const router = useRouter();
 const formData = reactive({
   name: "",
+  value: "",
   description: "",
 });
 const rules = {
   name: {
     required: helpers.withMessage("Se requiere el nombre", required),
   },
+  value: {
+    required: helpers.withMessage("Se requiere un valor", required),
+  },
   description: {
     required: helpers.withMessage("Se requiere la descripción", required),
   },
-  slug: {},
 };
 const v$ = useVuelidate(rules, formData);
 const errors = ref([]);
@@ -36,21 +38,20 @@ async function handleSubmit() {
   if (isFormCorrect) {
     try {
       if (!route.query.id) {
-        formData.slug = createSlug(formData.name);
-        await createCategoryRequest({
+        await createConfigurationRequest({
           json: JSON.stringify(formData),
         });
-        toast.success("Categoría guardada correctamente");
+        toast.success("Configuración guardada correctamente");
       } else {
-        await updateCategoryRequest(route.query.id, {
+        await updateConfigurationRequest(route.query.id, {
           json: JSON.stringify(formData),
         });
-        toast.success("Categoría actualizada correctamente");
+        toast.success("Configuración actualizada correctamente");
       }
-      router.push("/category");
+      router.push("/configurations");
     } catch (error) {
       toast.error(
-        "Error al añadir la categoría, por favor verifique que los datos estén correctos"
+        "Error al añadir la Configuración, por favor verifique que los datos estén correctos"
       );
     }
   }
@@ -59,11 +60,11 @@ async function handleSubmit() {
 onMounted(async () => {
   if (route.query.id) {
     try {
-      const res = await getCategoryRequest(route.query.id);
-      Object.assign(formData, res.data.category);
+      const res = await getConfigurationRequest(route.query.id);
+      Object.assign(formData, res.data.configuration);
     } catch (error) {
       toast.error("Error al cargar datos");
-      router.push("/category");
+      router.push("/configurations");
     }
   }
 });
@@ -71,7 +72,7 @@ onMounted(async () => {
 
 <template>
   <Forms
-    title="Información de categoría"
+    title="Información de la operación"
     icon="fa-list-alt"
     @handleSubmit="handleSubmit"
   >

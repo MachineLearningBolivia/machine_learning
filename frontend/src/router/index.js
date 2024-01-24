@@ -14,18 +14,20 @@ import Sale from "@/views/admin/Sale.vue";
 import Box from "@/views/admin/Box.vue";
 import OperationType from "@/views/admin/OperationType.vue";
 import Operation from "@/views/admin/Operation.vue";
+import Configuration from "@/views/admin/Configuration.vue";
 
 // Forms
-import Profile from "@/views/forms/ProfileForms.vue";
+import Profile from "@/views/forms/ProfileForm.vue";
 import UpdatePassword from "@/views/forms/UpdatePassword.vue";
-import UserForms from "@/views/forms/UserForms.vue";
-import PersonForms from "@/views/forms/PersonForms.vue";
-import CategoryForms from "@/views/forms/CategoryForms.vue";
-import ProductForms from "@/views/forms/ProductForms.vue";
-import SaleForms from "@/views/forms/SaleForms.vue";
-import BoxForms from "@/views/forms/BoxForms.vue";
-import OperationTypeForms from "@/views/forms/OperationTypeForms.vue";
-import OperationForms from "@/views/forms/OperationForms.vue";
+import UserForm from "@/views/forms/UserForm.vue";
+import PersonForm from "@/views/forms/PersonForm.vue";
+import CategoryForm from "@/views/forms/CategoryForm.vue";
+import ProductForm from "@/views/forms/ProductForm.vue";
+import SaleForm from "@/views/forms/SaleForm.vue";
+import BoxForm from "@/views/forms/BoxForm.vue";
+import OperationTypeForm from "@/views/forms/OperationTypeForm.vue";
+import OperationForm from "@/views/forms/OperationForm.vue";
+import ConfigurationForm from "@/views/forms/ConfigurationForm.vue";
 
 // views for Auth layout
 import Login from "@/views/auth/Login.vue";
@@ -39,31 +41,32 @@ const router = createRouter({
       component: Admin,
       meta: { requiresAuth: true },
       children: [
+        // Home
         {
           path: "/dashboard",
           component: Dashboard,
         },
-        // Configuración
+        // Perfil de usuario
         {
           path: "/profile",
           component: Profile,
         },
         {
-          path: "updatePassword",
+          path: "/update/password",
           component: UpdatePassword,
         },
-        // Usuario
+        // Usuarios
         {
-          path: "/user",
+          path: "/users",
           component: User,
         },
         {
-          path: "/newUser",
-          component: UserForms,
+          path: "/new/users",
+          component: UserForm,
         },
         {
-          path: "/updateUser",
-          component: UserForms,
+          path: "/update/users",
+          component: UserForm,
         },
         // Clientes
         {
@@ -71,88 +74,103 @@ const router = createRouter({
           component: Person,
         },
         {
-          path: "/newPerson",
-          component: PersonForms,
+          path: "/new/people",
+          component: PersonForm,
         },
         {
-          path: "/updatePerson",
-          component: PersonForms,
+          path: "/update/people",
+          component: PersonForm,
         },
-        // Productos
+        // Categorías
         {
-          path: "/category",
+          path: "/categories",
           component: Category,
         },
         {
-          path: "/newCategory",
-          component: CategoryForms,
+          path: "/new/categories",
+          component: CategoryForm,
         },
         {
-          path: "/updateCategory",
-          component: CategoryForms,
+          path: "/update/categories",
+          component: CategoryForm,
         },
+        // Productos
         {
-          path: "/product",
+          path: "/products",
           component: Product,
         },
         {
-          path: "/newProduct",
-          component: ProductForms,
+          path: "/new/products",
+          component: ProductForm,
         },
         {
-          path: "/updateProduct",
-          component: ProductForms,
+          path: "/update/products",
+          component: ProductForm,
         },
-        // Sale
+        // Ventas
         {
-          path: "/sale",
+          path: "/sales",
           component: Sale,
         },
         {
-          path: "/newSale",
-          component: SaleForms,
+          path: "/new/sales",
+          component: SaleForm,
         },
         {
-          path: "/updateSale",
-          component: SaleForms,
+          path: "/update/sales",
+          component: SaleForm,
         },
-        // Operación
-
+        // Tipos de operaciones
         {
-          path: "/box",
-          component: Box,
-        },
-        {
-          path: "/newBox",
-          component: BoxForms,
-        },
-        {
-          path: "/updateBox",
-          component: BoxForms,
-        },
-        {
-          path: "/operationType",
+          path: "/operations-type",
           component: OperationType,
         },
         {
-          path: "/newOperationType",
-          component: OperationTypeForms,
+          path: "/new/operations-type",
+          component: OperationTypeForm,
         },
         {
-          path: "/updateOperationType",
-          component: OperationTypeForms,
+          path: "/update/operations-type",
+          component: OperationTypeForm,
         },
+        // Operaciones
         {
-          path: "/operation",
+          path: "/operations",
           component: Operation,
         },
         {
-          path: "/newOperation",
-          component: OperationForms,
+          path: "/new/operations",
+          component: OperationForm,
         },
         {
-          path: "/updateOperation",
-          component: OperationForms,
+          path: "/update/operations",
+          component: OperationForm,
+        },
+        // Cajas
+        {
+          path: "/boxes",
+          component: Box,
+        },
+        {
+          path: "/new/boxes",
+          component: BoxForm,
+        },
+        {
+          path: "/update/boxes",
+          component: BoxForm,
+        },
+        // Configuraciones
+        {
+          path: "/configurations",
+          component: Configuration,
+        },
+        {
+          path: "/new/configurations",
+          component: ConfigurationForm,
+        },
+        {
+          path: "/update/configurations",
+          component: ConfigurationForm,
         },
       ],
     },
@@ -173,18 +191,6 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  // if (to.matched.some((record) => record.meta.requiresAuth)) {
-  //   // acceso a admin
-  //   const isAuthenticated = true;
-  //   if (!isAuthenticated) {
-  //     next("/auth/login");
-  //   } else {
-  //     next();
-  //   }
-  // } else {
-  //   next();
-  // }
-
   let ok = false;
   let path = "";
   const profileStore = useProfileStore();
@@ -214,15 +220,6 @@ router.beforeEach(async (to, from, next) => {
       ok = true;
     }
   }
-
-  // if (to.matched.some((record) => record.meta.requiresAdmin)) {
-  //   if (!profileStore.isAdmin) {
-  //     ok = false;
-  //     path = "/";
-  //   } else {
-  //     ok = true;
-  //   }
-  // }
 
   if (ok) {
     next();

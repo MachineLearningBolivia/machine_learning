@@ -2,7 +2,7 @@ import "./assets/index.css";
 
 import * as FaIcons from "oh-vue-icons/icons/fa";
 import * as CoIcons from "oh-vue-icons/icons/co";
-import * as GiIcons from "oh-vue-icons/icons/gi";
+import * as MdIcons from "oh-vue-icons/icons/md";
 
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -13,9 +13,9 @@ import { OhVueIcon, addIcons } from "oh-vue-icons";
 
 const Co = Object.values({ ...CoIcons });
 const Fa = Object.values({ ...FaIcons });
-const Gi = Object.values({ ...GiIcons });
+const Md = Object.values({ ...MdIcons });
 
-addIcons(...Fa, ...Co, ...Gi);
+addIcons(...Fa, ...Co, ...Md);
 
 const app = createApp(App);
 

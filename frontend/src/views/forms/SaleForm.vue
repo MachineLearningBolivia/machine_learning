@@ -64,7 +64,7 @@ async function handleSubmit() {
         });
         toast.success("Venta actualizada correctamente");
       }
-      router.push("/sale");
+      router.push("/sales");
     } catch (error) {
       toast.error(
         "Error al añadir la venta, por favor verifique que los datos estén correctos"
@@ -92,7 +92,7 @@ onMounted(async () => {
       Object.assign(formData, res.data.sale);
     } catch (error) {
       toast.error("Error al cargar datos");
-      router.push("/sale");
+      router.push("/sales");
     }
   }
 });
@@ -101,7 +101,7 @@ onMounted(async () => {
 <template>
   <Forms
     title="Información de producto"
-    icon="fa-chart-line"
+    icon="md-pointofsale"
     @handleSubmit="handleSubmit"
   >
     <h6

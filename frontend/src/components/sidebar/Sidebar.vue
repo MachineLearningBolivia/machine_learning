@@ -19,54 +19,38 @@ const utilsStore = useUtilsStore();
     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
       <ul class="space-y-2 font-medium">
         <li>
-          <Anchor to="/dashboard" icon="fa-chart-pie" name="Panel de control" />
+          <Anchor to="/dashboard" icon="md-dashboard" name="Panel de control" />
         </li>
         <li>
-          <Anchor to="/people" icon="fa-users" name="Clientes" />
-        </li>
-        <li>
-          <Anchor to="/user" icon="fa-users" name="Usuarios" />
-        </li>
-        <li>
-          <Anchor to="/sale" icon="fa-chart-bar" name="Ventas" />
-        </li>
-        <li>
-          <AnchorAccordion name="Productos" icon="fa-shopping-cart">
-            <li>
-              <Anchor to="/category" icon="fa-list-alt" name="Categorías" />
-              <Anchor to="/product" icon="fa-cubes" name="Productos" />
-            </li>
+          <AnchorAccordion name="Usuarios" icon="fa-users">
+            <Anchor to="/people" icon="fa-user-tie" name="Clientes" />
+            <Anchor to="/users" icon="fa-users-cog" name="Usuarios" />
           </AnchorAccordion>
         </li>
         <li>
-          <AnchorAccordion name="Operaciones" icon="fa-edit">
-            <li>
-              <Anchor to="/box" icon="fa-box" name="Cajas" />
-              <Anchor
-                to="/operationType"
-                icon="fa-regular-edit"
-                name="Tipo de operación"
-              />
-              <Anchor
-                to="/operation"
-                icon="fa-clipboard-list"
-                name="Operaciones"
-              />
-            </li>
+          <Anchor to="/sales" icon="md-pointofsale" name="Ventas" />
+        </li>
+        <li>
+          <Anchor to="/boxes" icon="fa-box" name="Cajas" />
+        </li>
+        <li>
+          <AnchorAccordion name="Productos" icon="fa-store">
+            <Anchor to="/categories" icon="fa-layer-group" name="Categorías" />
+            <Anchor to="/products" icon="fa-shopping-cart" name="Productos" />
           </AnchorAccordion>
         </li>
         <li>
-          <AnchorAccordion name="Configuración" icon="co-settings">
-            <li>
-              <Anchor to="/setting" icon="co-settings" name="Settings" />
-            </li>
-            <li>
-              <Anchor to="/setting" icon="co-settings" name="Settings" />
-            </li>
-            <li>
-              <Anchor to="/setting" icon="co-settings" name="Settings" />
-            </li>
+          <AnchorAccordion name="Operaciones" icon="fa-list">
+            <Anchor
+              to="/operations-type"
+              icon="fa-clipboard-list"
+              name="Tipo de operación"
+            />
+            <Anchor to="/operations" icon="fa-book" name="Operaciones" />
           </AnchorAccordion>
+        </li>
+        <li>
+          <Anchor to="/configurations" icon="fa-toolbox" name="Configuración" />
         </li>
       </ul>
     </div>
