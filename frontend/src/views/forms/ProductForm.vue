@@ -71,7 +71,7 @@ async function handleSubmit() {
         });
         toast.success("Producto actualizada correctamente");
       }
-      router.push("/product");
+      router.push("/products");
     } catch (error) {
       toast.error(
         "Error al añadir la producto, por favor verifique que los datos estén correctos"
@@ -93,7 +93,7 @@ onMounted(async () => {
       Object.assign(formData, res.data.product);
     } catch (error) {
       toast.error("Error al cargar datos");
-      router.push("/product");
+      router.push("/products");
     }
   }
 });
@@ -102,7 +102,7 @@ onMounted(async () => {
 <template>
   <Forms
     title="Información de producto"
-    icon="fa-list-alt"
+    icon="fa-shopping-cart"
     @handleSubmit="handleSubmit"
   >
     <h6

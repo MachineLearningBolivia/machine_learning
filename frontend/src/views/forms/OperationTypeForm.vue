@@ -1,9 +1,9 @@
 <script setup>
 import {
-  createPersonRequest,
-  getPersonRequest,
-  updatePersonRequest,
-} from "@/api/person";
+  createOperationTypeRequest,
+  getOperationTypeRequest,
+  updateOperationTypeRequest,
+} from "@/api/operationType";
 import { useRoute, useRouter } from "vue-router";
 import { reactive, ref, onMounted } from "vue";
 import { useVuelidate } from "@vuelidate/core";
@@ -16,19 +16,16 @@ const route = useRoute();
 const router = useRouter();
 const formData = reactive({
   name: "",
-  country: "",
-  city: "",
+  description: "",
 });
 const rules = {
   name: {
     required: helpers.withMessage("Se requiere el nombre", required),
   },
-  country: {
-    required: helpers.withMessage("Se requiere el país", required),
+  description: {
+    required: helpers.withMessage("Se requiere la descripción", required),
   },
-  city: {
-    required: helpers.withMessage("Se requiere la ciudad", required),
-  },
+  slug: {},
 };
 const v$ = useVuelidate(rules, formData);
 const errors = ref([]);
@@ -38,17 +35,17 @@ async function handleSubmit() {
   if (isFormCorrect) {
     try {
       if (!route.query.id) {
-        await createPersonRequest({
+        await createOperationTypeRequest({
           json: JSON.stringify(formData),
         });
-        toast.success("Usuario guardada correctamente");
+        toast.success("Categoría guardada correctamente");
       } else {
-        await updatePersonRequest(route.query.id, {
+        await updateOperationTypeRequest(route.query.id, {
           json: JSON.stringify(formData),
         });
-        toast.success("Usuario actualizada correctamente");
+        toast.success("Categoría actualizada correctamente");
       }
-      router.push("/people");
+      router.push("/operations-type");
     } catch (error) {
       toast.error(
         "Error al añadir la categoría, por favor verifique que los datos estén correctos"
@@ -60,11 +57,11 @@ async function handleSubmit() {
 onMounted(async () => {
   if (route.query.id) {
     try {
-      const res = await getPersonRequest(route.query.id);
-      Object.assign(formData, res.data.person);
+      const res = await getOperationTypeRequest(route.query.id);
+      Object.assign(formData, res.data.operationType);
     } catch (error) {
       toast.error("Error al cargar datos");
-      router.push("/people");
+      router.push("/operations-type");
     }
   }
 });
@@ -72,14 +69,14 @@ onMounted(async () => {
 
 <template>
   <Forms
-    title="Información del cliente"
-    icon="fa-user"
+    title="Información de tipo de operación"
+    icon="fa-clipboard-list"
     @handleSubmit="handleSubmit"
   >
     <h6
       class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
     >
-      Datos del cliente
+      Datos del tipo de operación
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-full px-4">
@@ -93,19 +90,10 @@ onMounted(async () => {
       </div>
       <div class="w-full lg:w-full px-4">
         <Input
-          id="city"
-          labelText="Ciudad"
-          v-model="v$.city.$model"
-          :errors="v$.city.$errors"
-          type="text"
-        />
-      </div>
-      <div class="w-full lg:w-full px-4">
-        <Input
-          id="country"
-          labelText="País"
-          v-model="v$.country.$model"
-          :errors="v$.country.$errors"
+          id="description"
+          labelText="Descripción"
+          v-model="v$.description.$model"
+          :errors="v$.description.$errors"
           type="text"
         />
       </div>

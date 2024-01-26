@@ -38,7 +38,7 @@
         <Input id="address" labelText="Dirección" type="text" />
       </div>
       <div class="w-full lg:w-6/12 px-4">
-        <Input id="telf" labelText="Telefono" type="number" />
+        <Input id="telf" labelText="Teléfono" type="number" />
       </div>
       <div class="w-full lg:w-6/12 px-4">
         <Input id="cel" labelText="Celular" type="number" />
@@ -53,6 +53,6 @@ import Forms from "@/components/Cards/Forms.vue";
 import Input from "@/components/Inputs/Input.vue";
 
 async function handleSubmit() {
-  toast.success("Informacion actualizada correctamente");
+  toast.success("Información actualizada correctamente");
 }
 </script>

@@ -47,7 +47,7 @@ function searchItems() {
 
 async function action(action) {
   if (action.action === "update") {
-    router.push({ path: "updateOperationType", query: { id: action.id } });
+    router.push({ path: "/update/operations-type", query: { id: action.id } });
   }
 }
 
@@ -57,12 +57,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <card-data title="Categorías" icon="fa-regular-edit">
+  <card-data title="Tipos de operaciones" icon="fa-clipboard-list">
     <template v-slot:filters>
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add to="/newOperationType">
+      <button-add to="/new/operations-type">
         Agregar tipo de operación
       </button-add>
     </template>

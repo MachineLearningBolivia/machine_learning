@@ -1,12 +1,12 @@
 <script setup>
-import { getSalesRequest } from "@/api/sale";
+import { getConfigurationsRequest } from "@/api/configuration";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
 import CardData from "@/components/Cards/CardData.vue";
 import Search from "@/components/Inputs/Search.vue";
-import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import DataTable from "@/components/Tables/DataTable.vue";
+import ButtonAdd from "@/components/button/ButtonAdd.vue";
 
 const router = useRouter();
 const items = ref([]);
@@ -15,18 +15,16 @@ const searchQuery = ref("");
 const load = ref(true);
 const columns = ref([
   { key: "id", label: "ID" },
-  { key: "quantity", label: "Cantidad" },
-  { key: "totalPrice", label: "Precio total" },
-  { key: "date", label: "fecha" },
-  { key: "product_id", label: "ID producto" },
-  { key: "person_id", label: "ID persona" },
+  { key: "name", label: "Nombre" },
+  { key: "value", label: "Valor" },
+  { key: "description", label: "Descripción" },
 ]);
 const options = ref([{ id: "update", name: "Actualizar", icon: "fa-plus" }]);
 
 async function loadData() {
   load.value = true;
   try {
-    const res = await getSalesRequest();
+    const res = await getConfigurationsRequest();
     items.value = res.data;
     itemsDisplay.value = items.value.data;
     load.value = false;
@@ -34,11 +32,13 @@ async function loadData() {
     toast.error("Error al cargar datos");
   }
 }
+
 watch(searchQuery, () => {
   searchItems();
 });
 
 function searchItems() {
+  console.log(itemsDisplay.value);
   const filteredItems = items.value.data.filter(
     (item) =>
       item.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
@@ -49,7 +49,7 @@ function searchItems() {
 
 async function action(action) {
   if (action.action === "update") {
-    router.push({ path: "/update/sales", query: { id: action.id } });
+    router.push({ path: "/update/configurations", query: { id: action.id } });
   }
 }
 
@@ -59,12 +59,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <card-data title="Ventas" icon="md-pointofsale">
+  <card-data title="Configuraciones" icon="fa-toolbox">
     <template v-slot:filters>
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add to="/new/sales">Agregar venta</button-add>
+      <button-add to="/new/configurations"> Agregar Configuración </button-add>
     </template>
     <DataTable
       :items="itemsDisplay"
