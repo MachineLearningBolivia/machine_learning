@@ -36,7 +36,7 @@ class UserController extends Controller
                 'surname' => 'required',
                 'role' => 'required',
                 'email' => 'required|email|unique:users',
-                'password' => 'required',
+                'password' => 'required|min:6',
                 'phone' => 'required',
                 'avatar' => 'required',
                 'status' => 'required',
@@ -86,7 +86,7 @@ class UserController extends Controller
                 'surname' => 'required',
                 'role' => 'required',
                 'email' => 'required|email|unique:users,email,' . $id, // Agregamos la excepción para el usuario actual
-                'password' => 'required',
+                // 'password' => 'required',
                 'phone' => 'required',
                 'avatar' => 'required',
                 'status' => 'required',

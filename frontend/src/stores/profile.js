@@ -39,9 +39,10 @@ export const useProfileStore = defineStore("profile", {
         throw error;
       }
     },
-    async login(email, password) {
+    async login(credentials) {
       try {
-        const res = await loginRequest(email, password);
+        console.log(credentials);
+        const res = await loginRequest(credentials);
         Cookies.set("token", res.data.token, { expires: 1 });
         this.user = res.data;
         this.isAuthenticated = true;

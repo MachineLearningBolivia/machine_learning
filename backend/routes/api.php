@@ -21,6 +21,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [AuthController::class, 'user']);
     Route::get('verify', [AuthController::class, 'verify']);
+    Route::post('update/profile', [AuthController::class, 'updateProfile']);
 
     Route::
             namespace('App\Http\Controllers')->group(function () {

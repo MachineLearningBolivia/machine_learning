@@ -31,7 +31,7 @@ async function handleSubmit(event) {
   const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect) {
     try {
-      await profileStore.login(formData);
+      await profileStore.login({ json: JSON.stringify(formData) });
       location.reload();
     } catch (error) {
       errors.value = error.response.data.errors;
