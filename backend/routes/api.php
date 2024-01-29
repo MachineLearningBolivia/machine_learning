@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ProductsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -41,3 +42,5 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get('client/products', [ProductsController::class, 'index']);
 Route::get('client/products/{id}', [ProductsController::class, 'show']);
+Route::get('client/categories', [CategoriesController::class, 'index']);
+Route::get('client/categories/{id}', [CategoriesController::class, 'show']);
