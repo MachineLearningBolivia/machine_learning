@@ -9,3 +9,6 @@ export const getCategoryRequest = (id) => axios.get("/categories/" + id);
 
 export const updateCategoryRequest = (id, category) =>
   axios.put("/categories/" + id, category);
+
+export const importCategoriesRequest = (categories) =>
+  axios.post("/categories/import", categories);

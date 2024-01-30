@@ -38,7 +38,8 @@ Route::middleware('auth:sanctum')->group(function () {
                 Route::apiResource('users', UserController::class);
             });
 
-    Route::post('import/categories', [ExcelController::class, 'importCategories']);
+    Route::post('categories/import', [ExcelController::class, 'importCategories']);
+    Route::post('products/import', [ExcelController::class, 'importProducts']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 });

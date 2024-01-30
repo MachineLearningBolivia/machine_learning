@@ -1,5 +1,5 @@
 <script setup>
-import { getProductsRequest } from "@/api/product";
+import { getProductsRequest, importProductsRequest } from "@/api/product";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -9,6 +9,7 @@ import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import DataTable from "@/components/Tables/DataTable.vue";
 
 const router = useRouter();
+const file = ref(null);
 const items = ref([]);
 const itemsDisplay = ref([]);
 const searchQuery = ref("");
@@ -53,6 +54,24 @@ async function action(action) {
   }
 }
 
+function handleFileUpload(event) {
+  file.value = event.target.files[0];
+}
+
+async function handleSubmit(event) {
+  event.preventDefault();
+  const formData = new FormData();
+  formData.append("import_file", file.value);
+  try {
+    await importProductsRequest(formData);
+    items.value = [];
+    loadData();
+    toast.success("Productos importados");
+  } catch (error) {
+    toast.error("Error al importar, elija un archivo");
+  }
+}
+
 onMounted(() => {
   loadData();
 });
@@ -64,6 +83,35 @@ onMounted(() => {
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
+
+      <form class="max-w-lg mx-auto" @submit="handleSubmit">
+        <div class="flex flex-wrap items-center">
+          <div class="w-full lg:w-6/12 mx-2 mb-2 lg:mb-0">
+            <label
+              class="block text-sm font-medium text-gray-900 dark:text-white"
+              for="file"
+              >Importar desde un archivo Excel</label
+            >
+            <input
+              id="file"
+              class="w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+              @change="handleFileUpload"
+              accept=".xlsx, .csv"
+              type="file"
+            />
+          </div>
+          <div class="w-full lg:w-4/12 mx-2">
+            <button
+              class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-3 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              type="submit"
+            >
+              <v-icon name="fa-file-import" class="mr-1" />
+              Importar
+            </button>
+          </div>
+        </div>
+      </form>
+
       <button-add to="/new/products"> Agregar Producto </button-add>
     </template>
     <DataTable

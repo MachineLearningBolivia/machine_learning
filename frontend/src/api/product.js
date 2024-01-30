@@ -9,3 +9,6 @@ export const getProductRequest = (id) => axios.get("/products/" + id);
 
 export const updateProductRequest = (id, product) =>
   axios.put("/products/" + id, product);
+
+export const importProductsRequest = (products) =>
+  axios.post("/products/import", products);

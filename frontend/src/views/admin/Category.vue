@@ -1,6 +1,5 @@
 <script setup>
-import { getCategoriesRequest } from "@/api/category";
-import { importCategoriesRequest } from "@/api/excel";
+import { getCategoriesRequest, importCategoriesRequest } from "@/api/category";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
