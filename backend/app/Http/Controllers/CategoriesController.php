@@ -48,7 +48,12 @@ class CategoriesController extends Controller
             // Devolver respuesta
             return response()->json(['status' => 'success', 'category' => $category], 201);
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna categoría', 'json' => $json, 'request' => $request], 400);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se envió ninguna categoría',
+                'json' => $json,
+                'request' => $request
+            ], 400);
         }
     }
 

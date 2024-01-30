@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\ProductsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,8 @@ Route::middleware('auth:sanctum')->group(function () {
                 Route::apiResource('sales', SalesController::class);
                 Route::apiResource('users', UserController::class);
             });
+
+    Route::post('import/categories', [ExcelController::class, 'importCategories']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 });

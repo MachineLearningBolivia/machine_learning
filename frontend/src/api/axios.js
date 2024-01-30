@@ -5,6 +5,7 @@ const instance = axios.create({
 });
 
 instance.defaults.headers.common["Authorization"] = getCookie("token");
+
 function getCookie(name) {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
