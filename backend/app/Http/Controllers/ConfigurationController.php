@@ -2,24 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OperationType;
+use App\Filters\ConfigurationFilter;
+use App\Http\Resources\ConfigurationCollection;
+use App\Models\Configuration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\OperationTypeCollection;
-use App\Filters\OperationTypeFilter;
 
-class OperationTypesController extends Controller
+class ConfigurationController extends Controller
 {
     public function index(Request $request)
     {
         try {
-            $filter = new OperationTypeFilter();
+            $filter = new ConfigurationFilter();
             $queryItems = $filter->transform($request);
 
-            $operationTypes = OperationType::where($queryItems);
-            return new OperationTypeCollection($operationTypes->paginate()->appends($request->query()));
+            $configurations = Configuration::where($queryItems);
+            return new ConfigurationCollection($configurations->paginate()->appends($request->query()));
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json([
+                'error' =>
+                    $e->getMessage()
+            ], 500);
         }
     }
 
@@ -33,6 +36,7 @@ class OperationTypesController extends Controller
             // Validar datos
             $validator = Validator::make($params_array, [
                 'name' => 'required',
+                'value' => 'required',
                 'description' => 'required',
             ]);
 
@@ -41,31 +45,37 @@ class OperationTypesController extends Controller
                 return response()->json($validator->errors(), 400);
             }
 
-            // Crear y guardar el tipo de operación
-            $operationType = OperationType::create($params_array);
+            // Crear y guardar la configuración
+            $configuration = Configuration::create($params_array);
 
             // Devolver respuesta
-            return response()->json(['status' => 'success', 'operationType' => $operationType], 201);
+            return response()->json([
+                'status' => 'success',
+                'configuration' => $configuration
+            ], 201);
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ningún tipo de operación'], 400);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se envió ninguna configuración'
+            ], 400);
         }
     }
 
     public function show($id)
     {
-        $operationType = OperationType::find($id);
+        $configuration = Configuration::find($id);
 
-        if ($operationType) {
+        if ($configuration) {
             return response()->json([
                 'code' => 200,
                 'status' => 'success',
-                'operationType' => $operationType
+                'configuration' => $configuration
             ], 200);
         } else {
             return response()->json([
                 'code' => 404,
                 'status' => 'error',
-                'message' => 'Tipo de operación no encontrado'
+                'message' => 'Configuración no encontrada'
             ], 404);
         }
     }
@@ -77,6 +87,7 @@ class OperationTypesController extends Controller
         if (!empty($params_array)) {
             $validator = Validator::make($params_array, [
                 'name' => 'required',
+                'value' => 'required',
                 'description' => 'required',
             ]);
 
@@ -84,16 +95,27 @@ class OperationTypesController extends Controller
                 return response()->json($validator->errors(), 400);
             }
 
-            $box = OperationType::find($id);
+            $box = Configuration::find($id);
 
             if ($box) {
                 $box->update($params_array);
-                return response()->json(['status' => 'success', 'box' => $box], 200);
+                return response()->json([
+                    'status' =>
+                        'success',
+                    'box' => $box
+                ], 200);
             } else {
-                return response()->json(['status' => 'error', 'message' => 'Caja no encontrada'], 404);
+                return response()->json([
+                    'status' =>
+                        'error',
+                    'message' => 'Caja no encontrada'
+                ], 404);
             }
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna caja'], 400);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se envió ninguna caja'
+            ], 400);
         }
     }
 }

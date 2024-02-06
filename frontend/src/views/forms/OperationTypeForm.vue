@@ -9,7 +9,7 @@ import { reactive, ref, onMounted } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, required } from "@vuelidate/validators";
 import { toast } from "vue-sonner";
-import Forms from "@/components/cards/Forms.vue";
+import Forms from "@/components/cards/Form.vue";
 import Input from "@/components/inputs/Input.vue";
 
 const route = useRoute();

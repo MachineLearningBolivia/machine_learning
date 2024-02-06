@@ -2,24 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Person;
+use App\Filters\BoxFilter;
+use App\Http\Resources\BoxCollection;
+use App\Models\Box;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\PersonCollection;
-use App\Filters\PersonFilter;
 
-class PeopleController extends Controller
+class BoxController extends Controller
 {
     public function index(Request $request)
     {
         try {
-            $filter = new PersonFilter();
+            $filter = new BoxFilter();
             $queryItems = $filter->transform($request);
 
-            $people = Person::where($queryItems);
-            return new PersonCollection($people->paginate($people->count())->appends($request->query()));
+            $boxes = Box::where($queryItems);
+            return new BoxCollection($boxes->paginate()->appends($request->query()));
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
@@ -33,8 +35,7 @@ class PeopleController extends Controller
             // Validar datos
             $validator = Validator::make($params_array, [
                 'name' => 'required',
-                'city' => 'required',
-                'country' => 'required',
+                'description' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -42,31 +43,37 @@ class PeopleController extends Controller
                 return response()->json($validator->errors(), 400);
             }
 
-            // Crear y guardar la persona
-            $person = Person::create($params_array);
+            // Crear y guardar la categoría
+            $box = Box::create($params_array);
 
             // Devolver respuesta
-            return response()->json(['status' => 'success', 'person' => $person], 201);
+            return response()->json([
+                'status' => 'success',
+                'box' => $box
+            ], 201);
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna persona'], 400);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se envió ninguna caja'
+            ], 400);
         }
     }
 
     public function show($id)
     {
-        $person = Person::find($id);
+        $box = Box::find($id);
 
-        if ($person) {
+        if ($box) {
             return response()->json([
                 'code' => 200,
                 'status' => 'success',
-                'person' => $person
+                'box' => $box
             ], 200);
         } else {
             return response()->json([
                 'code' => 404,
                 'status' => 'error',
-                'message' => 'Persona no encontrada'
+                'message' => 'Caja no encontrada'
             ], 404);
         }
     }
@@ -78,24 +85,33 @@ class PeopleController extends Controller
         if (!empty($params_array)) {
             $validator = Validator::make($params_array, [
                 'name' => 'required',
-                'city' => 'required',
-                'country' => 'required',
+                'description' => 'required',
             ]);
 
             if ($validator->fails()) {
                 return response()->json($validator->errors(), 400);
             }
 
-            $box = Person::find($id);
+            $box = Box::find($id);
 
             if ($box) {
                 $box->update($params_array);
-                return response()->json(['status' => 'success', 'box' => $box], 200);
+                return response()->json([
+                    'status' => 'success',
+                    'box' => $box
+                ], 200);
             } else {
-                return response()->json(['status' => 'error', 'message' => 'Caja no encontrada'], 404);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Caja no encontrada'
+                ], 404);
             }
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna caja'], 400);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se envió ninguna caja'
+            ], 400);
         }
     }
+
 }

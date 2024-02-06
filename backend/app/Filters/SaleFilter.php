@@ -14,7 +14,7 @@ class SaleFilter extends ApiFilter
         'productId' => ['eq'],
         'personId' => ['eq'],
     ];
-    protected $columMap = [
+    protected $columnMap = [
         'quantity' => 'quantity',
         'totalPrice' => 'total_price',
         'date' => 'date',

@@ -12,7 +12,7 @@ class PersonFilter extends ApiFilter
         'city' => ['eq'],
         'country' => ['eq']
     ];
-    protected $columMap = [
+    protected $columnMap = [
         'name' => 'name',
         'city' => 'city',
         'country' => 'country'

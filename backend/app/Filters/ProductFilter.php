@@ -15,7 +15,7 @@ class ProductFilter extends ApiFilter
         'status' => ['eq', 'neq', 'ne'],
         'categoryId' => ['eq'],
     ];
-    protected $columMap = [
+    protected $columnMap = [
         'name' => 'name',
         'description' => 'description',
         'price' => 'price',

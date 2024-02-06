@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Operations>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Operation>
  */
 class OperationFactory extends Factory
 {
@@ -25,7 +25,7 @@ class OperationFactory extends Factory
             'slug' => Str::slug($name),
             'operation_type_id' => \App\Models\OperationType::factory(),
             'box_id' => \App\Models\Box::factory(),
-            'user' =>    \App\Models\User::factory(),
+            'user' => \App\Models\User::factory(),
 
         ];
     }

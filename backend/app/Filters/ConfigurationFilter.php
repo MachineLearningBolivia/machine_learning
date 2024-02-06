@@ -12,7 +12,7 @@ class ConfigurationFilter extends ApiFilter
         'value' => ['eq'],
         'description' => ['eq']
     ];
-    protected $columMap = [
+    protected $columnMap = [
         'name' => 'name',
         'value' => 'value',
         'description' => 'description'

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class ApiFilter
 {
     protected $safeParams = [];
-    protected $columMap = [];
+    protected $columnMap = [];
     protected $operatorMap = [];
 
     public function transform(Request $request)
@@ -18,7 +18,7 @@ class ApiFilter
             if (!isset($query)) {
                 continue;
             }
-            $column = $this->columMap[$param] ?? $param;
+            $column = $this->columnMap[$param] ?? $param;
             foreach ($operators as $operator) {
                 if (isset($query[$operator])) {
                     $eloQuery[] = [$column, $this->operatorMap[$operator], $query[$operator]];

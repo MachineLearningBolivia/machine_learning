@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\OperationFilter;
+use App\Http\Resources\OperationCollection;
 use App\Models\Operation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\OperationCollection;
-use App\Filters\OperationFilter;
 
-class OperationsController extends Controller
+class OperationController extends Controller
 {
     public function index(Request $request)
     {
@@ -27,7 +27,10 @@ class OperationsController extends Controller
 
             return new OperationCollection($operations->paginate()->appends($request->query()));
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(
+                ['error' => $e->getMessage()],
+                500
+            );
         }
     }
 
@@ -56,9 +59,15 @@ class OperationsController extends Controller
             $operation = Operation::create($params_array);
 
             // Devolver respuesta
-            return response()->json(['status' => 'success', 'operation' => $operation], 201);
+            return response()->json([
+                'status' => 'success',
+                'operation' => $operation
+            ], 201);
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna operación'], 400);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se envió ninguna operación'
+            ], 400);
         }
     }
 
@@ -102,12 +111,21 @@ class OperationsController extends Controller
 
             if ($box) {
                 $box->update($params_array);
-                return response()->json(['status' => 'success', 'box' => $box], 200);
+                return response()->json([
+                    'status' => 'success',
+                    'box' => $box
+                ], 200);
             } else {
-                return response()->json(['status' => 'error', 'message' => 'Caja no encontrada'], 404);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Caja no encontrada'
+                ], 404);
             }
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna caja'], 400);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se envió ninguna caja'
+            ], 400);
         }
     }
 }

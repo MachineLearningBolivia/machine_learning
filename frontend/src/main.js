@@ -1,4 +1,4 @@
-import "./assets/index.css";
+import "./assets/main.css";
 
 import * as FaIcons from "oh-vue-icons/icons/fa";
 import * as CoIcons from "oh-vue-icons/icons/co";

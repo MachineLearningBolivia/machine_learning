@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\SaleFilter;
+use App\Http\Resources\SaleCollection;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\SaleCollection;
-use App\Filters\SaleFilter;
 
-class SalesController extends Controller
+class SaleController extends Controller
 {
     public function index(Request $request)
     {
@@ -25,9 +25,12 @@ class SalesController extends Controller
                 }
             }
 
-            return new SaleCollection($sales->paginate($sales->count())->appends($request->query()));
+            return new SaleCollection($sales->paginate()->appends($request->query()));
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json([
+                'error' =>
+                    $e->getMessage()
+            ], 500);
         }
     }
 
@@ -57,9 +60,15 @@ class SalesController extends Controller
             $sale = Sale::create($params_array);
 
             // Devolver respuesta
-            return response()->json(['status' => 'success', 'sale' => $sale], 201);
+            return response()->json([
+                'status' => 'success',
+                'sale' => $sale
+            ], 201);
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna venta'], 400);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se envió ninguna venta'
+            ], 400);
         }
     }
 
@@ -104,12 +113,21 @@ class SalesController extends Controller
 
             if ($box) {
                 $box->update($params_array);
-                return response()->json(['status' => 'success', 'box' => $box], 200);
+                return response()->json([
+                    'status' => 'success',
+                    'box' => $box
+                ], 200);
             } else {
-                return response()->json(['status' => 'error', 'message' => 'Caja no encontrada'], 404);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Caja no encontrada'
+                ], 404);
             }
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna caja'], 400);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se envió ninguna caja'
+            ], 400);
         }
     }
 }

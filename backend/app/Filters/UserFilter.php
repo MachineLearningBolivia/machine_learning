@@ -15,7 +15,7 @@ class UserFilter extends ApiFilter
         'phone' => ['eq'],
         'status' => ['eq', 'ne'],
     ];
-    protected $columMap = [
+    protected $columnMap = [
         'name' => 'name',
         'surname' => 'surname',
         'role' => 'role',

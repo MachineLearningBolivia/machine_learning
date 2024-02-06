@@ -1,7 +1,7 @@
 <script setup>
 import { useProfileStore } from "@/stores/profile";
 import { useDark, useToggle } from "@vueuse/core";
-import Dropdown from "@/components/Dropdown/Dropdown.vue";
+import Dropdown from "@/components/dropdowns/Dropdown.vue";
 
 const profileStore = useProfileStore();
 const isDark = useDark();

@@ -1,3 +1,13 @@
+<script setup>
+import { toast } from "vue-sonner";
+import Forms from "@/components/Cards/Form.vue";
+import Input from "@/components/Inputs/Input.vue";
+
+async function handleSubmit() {
+  toast.success("Contraseña actualizada");
+}
+</script>
+
 <template>
   <Forms title="Cambiar contraseña" icon="fa-key" @handleSubmit="handleSubmit">
     <h6 class="text-gray-400 text-sm mt-3 mb-6 font-bold uppercase">
@@ -20,13 +30,3 @@
     </div>
   </Forms>
 </template>
-<script setup>
-import { toast } from "vue-sonner";
-
-import Forms from "@/components/Cards/Forms.vue";
-import Input from "@/components/Inputs/Input.vue";
-
-async function handleSubmit() {
-  toast.success("Contraseña actualizada");
-}
-</script>

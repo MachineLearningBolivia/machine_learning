@@ -9,10 +9,13 @@ class Box extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description'];
+    protected $fillable = [
+        'name',
+        'description'
+    ];
 
     public function operation()
     {
-        return $this->hasMany(Operation::class, 'box_id');
+        return $this->hasMany(Operation::class);
     }
 }

@@ -3,10 +3,10 @@ import { getConfigurationsRequest } from "@/api/configuration";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
-import CardData from "@/components/Cards/CardData.vue";
-import Search from "@/components/Inputs/Search.vue";
-import DataTable from "@/components/Tables/DataTable.vue";
-import ButtonAdd from "@/components/button/ButtonAdd.vue";
+import CardData from "@/components/cards/CardData.vue";
+import Search from "@/components/inputs/Search.vue";
+import DataTable from "@/components/tables/DataTable.vue";
+import ButtonAdd from "@/components/buttons/ButtonAdd.vue";
 
 const router = useRouter();
 const items = ref([]);

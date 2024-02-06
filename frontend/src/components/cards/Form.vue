@@ -1,6 +1,6 @@
 <script setup>
-import ButtonReturn from "@/components/button/ButtonReturn.vue";
-import ButtonSave from "@/components/button/ButtonSave.vue";
+import ButtonReturn from "@/components/buttons/ButtonReturn.vue";
+import ButtonSave from "@/components/buttons/ButtonSave.vue";
 
 const props = defineProps({
   title: {

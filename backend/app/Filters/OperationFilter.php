@@ -13,7 +13,7 @@ class OperationFilter extends ApiFilter
         'boxId' => ['eq'],
         'userId' => ['eq'],
     ];
-    protected $columMap = [
+    protected $columnMap = [
         'name' => 'name',
         'operationTypeId' => 'operation_type_id',
         'boxId' => 'box_id',

@@ -1,10 +1,16 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\BoxController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\ExcelController;
-use App\Http\Controllers\ProductsController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\OperationController;
+use App\Http\Controllers\OperationTypeController;
+use App\Http\Controllers\PersonController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,33 +24,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('login', [AuthController::class, 'login']);
+Route::post('auth/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('user', [AuthController::class, 'user']);
-    Route::get('verify', [AuthController::class, 'verify']);
-    Route::post('update/profile', [AuthController::class, 'updateProfile']);
-
-    Route::
-            namespace('App\Http\Controllers')->group(function () {
-                Route::apiResource('boxes', BoxesController::class);
-                Route::apiResource('categories', CategoriesController::class);
-                Route::apiResource('products', ProductsController::class);
-                Route::apiResource('configurations', ConfigurationsController::class);
-                Route::apiResource('operations', OperationsController::class);
-                Route::apiResource('operationTypes', OperationTypesController::class);
-                Route::apiResource('people', PeopleController::class);
-                Route::apiResource('sales', SalesController::class);
-                Route::apiResource('users', UserController::class);
-            });
-
+    Route::get('auth/verify', [AuthController::class, 'verify']);
+    Route::apiResource('boxes', BoxController::class);
+    Route::apiResource('categories', CategoryController::class);
     Route::post('categories/import', [ExcelController::class, 'importCategories']);
+    Route::apiResource('products', ProductController::class);
     Route::post('products/import', [ExcelController::class, 'importProducts']);
-
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::apiResource('configurations', ConfigurationController::class);
+    Route::apiResource('operations', OperationController::class);
+    Route::apiResource('operationTypes', OperationTypeController::class);
+    Route::apiResource('people', PersonController::class);
+    Route::apiResource('sales', SaleController::class);
+    Route::apiResource('users', UserController::class);
+    Route::post('auth/logout', [AuthController::class, 'logout']);
 });
 
-Route::get('client/products', [ProductsController::class, 'index']);
-Route::get('client/products/{id}', [ProductsController::class, 'show']);
-Route::get('client/categories', [CategoriesController::class, 'index']);
-Route::get('client/categories/{id}', [CategoriesController::class, 'show']);
+Route::apiResource('categories', CategoryController::class)->only('index', 'show');
+Route::apiResource('products', ProductController::class)->only('index', 'show');

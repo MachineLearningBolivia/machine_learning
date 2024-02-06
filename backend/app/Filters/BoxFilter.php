@@ -11,7 +11,7 @@ class BoxFilter extends ApiFilter
         'name' => ['eq'],
         'description' => ['eq']
     ];
-    protected $columMap = [
+    protected $columnMap = [
         'name' => 'name',
         'description' => 'description'
     ];

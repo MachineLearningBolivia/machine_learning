@@ -1,6 +1,5 @@
 <script setup>
 import { useUtilsStore } from "@/stores/utils";
-
 import Avatar from "@/components/avatar/Avatar.vue";
 
 const utilsStore = useUtilsStore();

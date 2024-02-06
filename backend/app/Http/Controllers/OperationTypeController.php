@@ -2,24 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Filters\OperationTypeFilter;
+use App\Http\Resources\OperationTypeCollection;
+use App\Models\OperationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\CategoryCollection;
-use App\Filters\CategoryFilter;
 
-class CategoriesController extends Controller
+class OperationTypeController extends Controller
 {
     public function index(Request $request)
     {
         try {
-            $filter = new CategoryFilter();
+            $filter = new OperationTypeFilter();
             $queryItems = $filter->transform($request);
 
-            $categories = Category::where($queryItems);
-            return new CategoryCollection($categories->paginate($categories->count())->appends($request->query()));
+            $operationTypes = OperationType::where($queryItems);
+            return new OperationTypeCollection($operationTypes->paginate()->appends($request->query()));
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json([
+                'error' =>
+                    $e->getMessage()
+            ], 500);
         }
     }
 
@@ -33,7 +36,6 @@ class CategoriesController extends Controller
             // Validar datos
             $validator = Validator::make($params_array, [
                 'name' => 'required',
-                'slug' => 'required',
                 'description' => 'required',
             ]);
 
@@ -42,36 +44,37 @@ class CategoriesController extends Controller
                 return response()->json($validator->errors(), 400);
             }
 
-            // Crear y guardar la categoría
-            $category = Category::create($params_array);
+            // Crear y guardar el tipo de operación
+            $operationType = OperationType::create($params_array);
 
             // Devolver respuesta
-            return response()->json(['status' => 'success', 'category' => $category], 201);
+            return response()->json([
+                'status' => 'success',
+                'operationType' => $operationType
+            ], 201);
         } else {
             return response()->json([
                 'status' => 'error',
-                'message' => 'No se envió ninguna categoría',
-                'json' => $json,
-                'request' => $request
+                'message' => 'No se envió ningún tipo de operación'
             ], 400);
         }
     }
 
     public function show($id)
     {
-        $category = Category::find($id);
+        $operationType = OperationType::find($id);
 
-        if ($category) {
+        if ($operationType) {
             return response()->json([
                 'code' => 200,
                 'status' => 'success',
-                'category' => $category
+                'operationType' => $operationType
             ], 200);
         } else {
             return response()->json([
                 'code' => 404,
                 'status' => 'error',
-                'message' => 'Categoría no encontrada'
+                'message' => 'Tipo de operación no encontrado'
             ], 404);
         }
     }
@@ -90,16 +93,25 @@ class CategoriesController extends Controller
                 return response()->json($validator->errors(), 400);
             }
 
-            $box = Category::find($id);
+            $box = OperationType::find($id);
 
             if ($box) {
                 $box->update($params_array);
-                return response()->json(['status' => 'success', 'box' => $box], 200);
+                return response()->json([
+                    'status' => 'success',
+                    'box' => $box
+                ], 200);
             } else {
-                return response()->json(['status' => 'error', 'message' => 'Caja no encontrada'], 404);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Caja no encontrada'
+                ], 404);
             }
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna caja'], 400);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se envió ninguna caja'
+            ], 400);
         }
     }
 }

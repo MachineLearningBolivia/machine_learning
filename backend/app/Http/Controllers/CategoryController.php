@@ -2,25 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Configuration;
+use App\Filters\CategoryFilter;
+use App\Http\Resources\CategoryCollection;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\ConfigurationCollection;
-use App\Filters\ConfigurationFilter;
 
-
-class ConfigurationsController extends Controller
+class CategoryController extends Controller
 {
     public function index(Request $request)
     {
         try {
-            $filter = new ConfigurationFilter();
+            $filter = new CategoryFilter();
             $queryItems = $filter->transform($request);
 
-            $configurations = Configuration::where($queryItems);
-            return new ConfigurationCollection($configurations->paginate()->appends($request->query()));
+            $categories = Category::where($queryItems);
+            return new CategoryCollection($categories->paginate()->appends($request->query()));
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
@@ -34,7 +35,7 @@ class ConfigurationsController extends Controller
             // Validar datos
             $validator = Validator::make($params_array, [
                 'name' => 'required',
-                'value' => 'required',
+                'slug' => 'required',
                 'description' => 'required',
             ]);
 
@@ -43,31 +44,39 @@ class ConfigurationsController extends Controller
                 return response()->json($validator->errors(), 400);
             }
 
-            // Crear y guardar la configuración
-            $configuration = Configuration::create($params_array);
+            // Crear y guardar la categoría
+            $category = Category::create($params_array);
 
             // Devolver respuesta
-            return response()->json(['status' => 'success', 'configuration' => $configuration], 201);
+            return response()->json([
+                'status' =>
+                    'success',
+                'category' => $category
+            ], 201);
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna configuración'], 400);
+            return response()->json([
+                'status' =>
+                    'error',
+                'message' => 'No se envió ninguna categoría'
+            ], 400);
         }
     }
 
     public function show($id)
     {
-        $configuration = Configuration::find($id);
+        $category = Category::find($id);
 
-        if ($configuration) {
+        if ($category) {
             return response()->json([
                 'code' => 200,
                 'status' => 'success',
-                'configuration' => $configuration
+                'category' => $category
             ], 200);
         } else {
             return response()->json([
                 'code' => 404,
                 'status' => 'error',
-                'message' => 'Configuración no encontrada'
+                'message' => 'Categoría no encontrada'
             ], 404);
         }
     }
@@ -79,7 +88,6 @@ class ConfigurationsController extends Controller
         if (!empty($params_array)) {
             $validator = Validator::make($params_array, [
                 'name' => 'required',
-                'value' => 'required',
                 'description' => 'required',
             ]);
 
@@ -87,16 +95,26 @@ class ConfigurationsController extends Controller
                 return response()->json($validator->errors(), 400);
             }
 
-            $box = Configuration::find($id);
+            $box = Category::find($id);
 
             if ($box) {
                 $box->update($params_array);
-                return response()->json(['status' => 'success', 'box' => $box], 200);
+                return response()->json([
+                    'status' => 'success',
+                    'box' => $box
+                ], 200);
             } else {
-                return response()->json(['status' => 'error', 'message' => 'Caja no encontrada'], 404);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Caja no encontrada'
+                ], 404);
             }
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna caja'], 400);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se envió ninguna caja'
+            ], 400);
         }
     }
+
 }

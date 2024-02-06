@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\UserFilter;
+use App\Http\Resources\UserCollection;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\UserCollection;
-use App\Filters\UserFilter;
 
 class UserController extends Controller
 {
@@ -17,9 +17,12 @@ class UserController extends Controller
             $queryItems = $filter->transform($request);
 
             $users = User::where($queryItems);
-            return new UserCollection($users->paginate($users->count())->appends($request->query()));
+            return new UserCollection($users->paginate()->appends($request->query()));
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json([
+                'error'
+                => $e->getMessage()
+            ], 500);
         }
     }
 
@@ -36,7 +39,7 @@ class UserController extends Controller
                 'surname' => 'required',
                 'role' => 'required',
                 'email' => 'required|email|unique:users',
-                'password' => 'required|min:6',
+                'password' => 'required',
                 'phone' => 'required',
                 'avatar' => 'required',
                 'status' => 'required',
@@ -51,9 +54,15 @@ class UserController extends Controller
             $user = User::create($params_array);
 
             // Devolver respuesta
-            return response()->json(['status' => 'success', 'user' => $user], 201);
+            return response()->json([
+                'status' => 'success',
+                'user' => $user
+            ], 201);
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ningún usuario'], 400);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se envió ningún usuario'
+            ], 400);
         }
     }
 
@@ -85,8 +94,8 @@ class UserController extends Controller
                 'name' => 'required',
                 'surname' => 'required',
                 'role' => 'required',
-                'email' => 'required|email|unique:users,email,' . $id, // Agregamos la excepción para el usuario actual
-                // 'password' => 'required',
+                'email' => 'required|email|unique:users',
+                'password' => 'required',
                 'phone' => 'required',
                 'avatar' => 'required',
                 'status' => 'required',
@@ -96,16 +105,25 @@ class UserController extends Controller
                 return response()->json($validator->errors(), 400);
             }
 
-            $user = User::find($id);
+            $box = User::find($id);
 
-            if ($user) {
-                $user->update($params_array);
-                return response()->json(['status' => 'success', 'user' => $user], 200);
+            if ($box) {
+                $box->update($params_array);
+                return response()->json([
+                    'status' => 'success',
+                    'box' => $box
+                ], 200);
             } else {
-                return response()->json(['status' => 'error', 'message' => 'Usuario no encontrado'], 404);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Caja no encontrada'
+                ], 404);
             }
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ningún usuario'], 400);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se envió ninguna caja'
+            ], 400);
         }
     }
 }

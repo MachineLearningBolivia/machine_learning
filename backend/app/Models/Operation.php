@@ -9,7 +9,13 @@ class Operation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'operation_type_id', 'box_id', 'user'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'operation_type_id',
+        'box_id',
+        'user'
+    ];
 
     public function box()
     {

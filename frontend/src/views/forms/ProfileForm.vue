@@ -1,3 +1,13 @@
+<script setup>
+import { toast } from "vue-sonner";
+import Forms from "@/components/cards/Form.vue";
+import Input from "@/components/inputs/Input.vue";
+
+async function handleSubmit() {
+  toast.success("Información actualizada correctamente");
+}
+</script>
+
 <template>
   <Forms
     title="Información de usuario"
@@ -46,13 +56,3 @@
     </div>
   </Forms>
 </template>
-<script setup>
-import { toast } from "vue-sonner";
-
-import Forms from "@/components/Cards/Forms.vue";
-import Input from "@/components/Inputs/Input.vue";
-
-async function handleSubmit() {
-  toast.success("Información actualizada correctamente");
-}
-</script>

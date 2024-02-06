@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\ProductFilter;
+use App\Http\Resources\ProductCollection;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\ProductCollection;
-use App\Filters\ProductFilter;
 
-class ProductsController extends Controller
+class ProductController extends Controller
 {
     public function index(Request $request)
     {
@@ -25,9 +25,12 @@ class ProductsController extends Controller
                 }
             }
 
-            return new ProductCollection($products->paginate($products->count())->appends($request->query()));
+            return new ProductCollection($products->paginate()->appends($request->query()));
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json([
+                'error' =>
+                    $e->getMessage()
+            ], 500);
         }
     }
 
@@ -52,17 +55,22 @@ class ProductsController extends Controller
 
             if ($validator->fails()) {
                 // Devolver error de validación
-                return response()->json(['status' => 'error', 'message' => 'Error de validación', 'errors' => $validator->errors()], 400);
-                //return response()->json($validator->errors(), 400);
+                return response()->json($validator->errors(), 400);
             }
 
             // Crear y guardar el producto
             $product = Product::create($params_array);
 
             // Devolver respuesta
-            return response()->json(['status' => 'success', 'product' => $product], 201);
+            return response()->json([
+                'status' => 'success',
+                'product' => $product
+            ], 201);
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ningún producto', 'json' => $json, 'request' => $request], 400);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se envió ningún producto'
+            ], 400);
         }
     }
 
@@ -109,12 +117,22 @@ class ProductsController extends Controller
 
             if ($box) {
                 $box->update($params_array);
-                return response()->json(['status' => 'success', 'box' => $box], 200);
+                return response()->json([
+                    'status' => 'success',
+                    'box' => $box
+                ], 200);
             } else {
-                return response()->json(['status' => 'error', 'message' => 'Caja no encontrada'], 404);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Caja no encontrada'
+                ], 404);
             }
         } else {
-            return response()->json(['status' => 'error', 'message' => 'No se envió ninguna caja'], 400);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se envió ninguna caja'
+            ], 400);
         }
     }
+
 }
