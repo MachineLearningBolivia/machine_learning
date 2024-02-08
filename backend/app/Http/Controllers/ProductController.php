@@ -25,7 +25,7 @@ class ProductController extends Controller
                 }
             }
 
-            return new ProductCollection($products->paginate()->appends($request->query()));
+            return new ProductCollection($products->paginate($products->count())->appends($request->query()));
         } catch (\Exception $e) {
             return response()->json([
                 'error' =>

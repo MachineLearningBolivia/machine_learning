@@ -17,7 +17,7 @@ class CategoryController extends Controller
             $queryItems = $filter->transform($request);
 
             $categories = Category::where($queryItems);
-            return new CategoryCollection($categories->paginate()->appends($request->query()));
+            return new CategoryCollection($categories->paginate($categories->count())->appends($request->query()));
         } catch (\Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()

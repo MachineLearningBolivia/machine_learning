@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: "https://machinelearning-production-b92a.up.railway.app/api",
 });
 
 instance.defaults.headers.common["Authorization"] = getCookie("token");
