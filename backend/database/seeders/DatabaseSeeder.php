@@ -12,16 +12,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::factory()->create([
-            'name' => 'Admin',
-            'surname' => 'User',
-            'role' => 'admin',
-            'email' => 'admin@user.com',
-            'password' => bcrypt('password'),
-            'phone' => '+59176543210',
-            'avatar' => 'URL://user.admin',
-            'status' => 'active',
-        ]);
+        //\App\Models\User::factory()->create([
+          //  'name' => 'Admin',
+            //'surname' => 'User',
+            //'role' => 'admin',
+            //'email' => 'admin@user.com',
+            //'password' => bcrypt('password'),
+            //'phone' => '+59176543210',
+            //'avatar' => 'URL://user.admin',
+            //'status' => 'active',
+        //]);
 
         // \App\Models\User::factory(50)->create();
         // \App\Models\Box::factory(50)->create();
@@ -32,5 +32,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\OperationType::factory(50)->create();
         // \App\Models\Operation::factory(50)->create();
         // \App\Models\Configuration::factory(50)->create();
+        \App\Models\Categoria::factory(1)->create();
+        \App\Models\Maquinaria::factory(5)->create();
     }
 }
