@@ -40,6 +40,12 @@ const utilsStore = useUtilsStore();
           </AnchorAccordion>
         </li>
         <li>
+          <AnchorAccordion name="Maquinaria" icon="fa-table">
+            <Anchor to="/categorias" icon="fa-layer-group" name="Categorías" />
+            <Anchor to="/maquinaria" icon="fa-shopping-cart" name="Maquinas" />
+          </AnchorAccordion>
+        </li>
+        <li>
           <AnchorAccordion name="Operaciones" icon="fa-list">
             <Anchor
               to="/operations-type"

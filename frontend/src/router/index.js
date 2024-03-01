@@ -9,7 +9,9 @@ import Dashboard from "@/views/admin/Dashboard.vue";
 import User from "@/views/admin/User.vue";
 import Person from "@/views/admin/Person.vue";
 import Category from "@/views/admin/Category.vue";
+import Categoria from "@/views/admin/Categoria.vue";
 import Product from "@/views/admin/Product.vue";
+import Maquina from "@/views/admin/Maquina.vue";
 import Sale from "@/views/admin/Sale.vue";
 import Box from "@/views/admin/Box.vue";
 import OperationType from "@/views/admin/OperationType.vue";
@@ -22,7 +24,9 @@ import UpdatePassword from "@/views/forms/UpdatePassword.vue";
 import UserForm from "@/views/forms/UserForm.vue";
 import PersonForm from "@/views/forms/PersonForm.vue";
 import CategoryForm from "@/views/forms/CategoryForm.vue";
+import CategoriaForm from "@/views/forms/CategoriaForm.vue";
 import ProductForm from "@/views/forms/ProductForm.vue";
+import MaquinaForm from "@/views/forms/MaquinaForm.vue";
 import SaleForm from "@/views/forms/SaleForm.vue";
 import BoxForm from "@/views/forms/BoxForm.vue";
 import OperationTypeForm from "@/views/forms/OperationTypeForm.vue";
@@ -94,6 +98,18 @@ const router = createRouter({
           path: "/update/categories",
           component: CategoryForm,
         },
+        {
+          path: "/categorias",
+          component: Categoria,
+        },
+        {
+          path: "/new/categorias",
+          component: CategoriaForm,
+        },
+        {
+          path: "/update/categorias",
+          component: CategoriaForm,
+        },
         // Productos
         {
           path: "/products",
@@ -106,6 +122,19 @@ const router = createRouter({
         {
           path: "/update/products",
           component: ProductForm,
+        },
+        // Maquinas
+        {
+          path: "/maquinaria",
+          component: Maquina,
+        },
+        {
+          path: "/new/maquinaria",
+          component: MaquinaForm,
+        },
+        {
+          path: "/update/maquinaria",
+          component: MaquinaForm,
         },
         // Ventas
         {
