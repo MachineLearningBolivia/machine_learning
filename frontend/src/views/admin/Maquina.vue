@@ -112,7 +112,7 @@ onMounted(() => {
         </div>
       </form>
 
-      <button-add to="/new/maquinaria"> Agregar Producto </button-add>
+      <button-add to="/new/maquinaria"> Agregar Maquina </button-add>
     </template>
     <DataTable
       :items="itemsDisplay"

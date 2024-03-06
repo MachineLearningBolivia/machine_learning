@@ -30,9 +30,9 @@ const utilsStore = useUtilsStore();
         <li>
           <Anchor to="/sales" icon="md-pointofsale" name="Ventas" />
         </li>
-        <li>
+        <!-- <li>
           <Anchor to="/boxes" icon="fa-box" name="Cajas" />
-        </li>
+        </li> -->
         <li>
           <AnchorAccordion name="Productos" icon="fa-store">
             <Anchor to="/categories" icon="fa-layer-group" name="Categorías" />
@@ -40,12 +40,12 @@ const utilsStore = useUtilsStore();
           </AnchorAccordion>
         </li>
         <li>
-          <AnchorAccordion name="Maquinaria" icon="fa-table">
+          <AnchorAccordion name="Maquinas" icon="fa-table">
             <Anchor to="/categorias" icon="fa-layer-group" name="Categorías" />
             <Anchor to="/maquinaria" icon="fa-shopping-cart" name="Maquinas" />
           </AnchorAccordion>
         </li>
-        <li>
+        <!-- <li>
           <AnchorAccordion name="Operaciones" icon="fa-list">
             <Anchor
               to="/operations-type"
@@ -57,7 +57,7 @@ const utilsStore = useUtilsStore();
         </li>
         <li>
           <Anchor to="/configurations" icon="fa-toolbox" name="Configuración" />
-        </li>
+        </li> -->
       </ul>
     </div>
   </aside>

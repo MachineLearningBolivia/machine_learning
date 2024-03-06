@@ -142,7 +142,7 @@ function action(data) {
             </Dropdown>
           </td>
 
-          <td>
+          <!-- <td>
             <button
               @click.stop="editItem(item)"
               class="text-blue-500 hover:underline"
@@ -151,7 +151,7 @@ function action(data) {
             </button>
 
             <button-edit to="/newProduct"> Editar Producto </button-edit>
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </table>

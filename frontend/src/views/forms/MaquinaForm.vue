@@ -18,7 +18,7 @@ import Checkbox from "@/components/inputs/Checkbox.vue";
 
 const route = useRoute();
 const router = useRouter();
-const categories = ref([]);
+const categorias = ref([]);
 const formData = reactive({
   name: "",
   description: "",
